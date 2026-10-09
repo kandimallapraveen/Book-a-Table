@@ -1,33 +1,63 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Tabs } from "expo-router";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+const ORANGE = "#FC8019";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+
+        tabBarActiveTintColor: ORANGE,
+        tabBarInactiveTintColor: "#888888",
+
+        tabBarStyle: {
+          height: 70,
+          paddingTop: 8,
+          paddingBottom: 10,
+          backgroundColor: "#FFFFFF",
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Home",
+          tabBarIcon: () => (
+            <IconSymbol size={26} name="house.fill" color={ORANGE} />
+          ),
         }}
       />
+
       <Tabs.Screen
-        name="explore"
+        name="bookings"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Bookings",
+          tabBarIcon: () => (
+            <MaterialIcons name="calendar-month" size={28} color={ORANGE} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="reorder"
+        options={{
+          title: "Reorder",
+          tabBarIcon: () => (
+            <MaterialIcons name="sync" size={30} color={ORANGE} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: () => (
+            <IconSymbol size={26} name="person.fill" color={ORANGE} />
+          ),
         }}
       />
     </Tabs>
