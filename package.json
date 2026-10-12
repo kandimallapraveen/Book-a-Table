@@ -50,6 +50,7 @@
   "devDependencies": {
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.27.1",
     "@babel/plugin-transform-optional-chaining": "^7.27.1",
+    "@react-native-community/cli": "^20.2.0",
     "@testing-library/react-native": "^14.0.1",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.2.4",
