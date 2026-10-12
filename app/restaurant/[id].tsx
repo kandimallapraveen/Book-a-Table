@@ -131,7 +131,6 @@ export default function RestaurantDetails() {
           </TouchableOpacity>
         </View>
 
-        {/* TABLE BOOKING BANNER */}
         <View
           style={{
             height: 235,
@@ -170,7 +169,6 @@ export default function RestaurantDetails() {
           </Text>
         </View>
 
-        {/* BOOKING DETAILS */}
         <View
           style={{
             backgroundColor: "#FFFFFF",
@@ -239,7 +237,6 @@ export default function RestaurantDetails() {
           </View>
         </View>
 
-        {/* DINE CASH */}
         <View
           style={{
             backgroundColor: "#276B4E",
@@ -304,7 +301,6 @@ export default function RestaurantDetails() {
           </View>
         </View>
 
-        {/* USEFUL BITS */}
         <View
           style={{
             paddingTop: 30,
@@ -324,7 +320,6 @@ export default function RestaurantDetails() {
           </Text>
         </View>
 
-        {/* MENU */}
         <View
           style={{
             backgroundColor: "#FFFFFF",
@@ -378,7 +373,6 @@ export default function RestaurantDetails() {
           </Text>
         </View>
 
-        {/* POPULAR DISHES */}
         <View
           style={{
             backgroundColor: "#FFFFFF",
@@ -475,7 +469,6 @@ export default function RestaurantDetails() {
           />
         </View>
 
-        {/* PHOTOS */}
         <View
           style={{
             backgroundColor: "#FFFFFF",
@@ -541,7 +534,6 @@ export default function RestaurantDetails() {
           </View>
         </View>
 
-        {/* ABOUT */}
         <View
           style={{
             backgroundColor: "#FFFFFF",
@@ -603,7 +595,6 @@ export default function RestaurantDetails() {
         </View>
       </ScrollView>
 
-      {/* BOTTOM BUTTONS */}
       <View
         style={{
           position: "absolute",
@@ -624,7 +615,6 @@ export default function RestaurantDetails() {
             justifyContent: "space-between",
           }}
         >
-          {/* BOOK TABLE */}
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={handleBookTable}
@@ -648,7 +638,6 @@ export default function RestaurantDetails() {
             </Text>
           </TouchableOpacity>
 
-          {/* PAY BILL */}
           <TouchableOpacity
             activeOpacity={0.85}
             onPress={handlePayBill}
