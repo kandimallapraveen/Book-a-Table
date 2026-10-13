@@ -27,17 +27,17 @@ const coupons = [
   {
     bank: "Paytm",
     title: "10% OFF",
-    subtitle: "Paytm tho pay chesthe 10% offer",
+    subtitle: " pay withPaytm  10% offer",
   },
   {
     bank: "HDFC Bank",
     title: "10% OFF",
-    subtitle: "HDFC Bank tho pay chesthe 10% offer",
+    subtitle: "pay with HDFC Bank  10% offer",
   },
   {
     bank: "PhonePe",
     title: "₹150 CASHBACK",
-    subtitle: "PhonePe tho pay chesthe cashback",
+    subtitle: " pay withPhonePe  ₹150 CASHBACK",
   },
 ];
 
