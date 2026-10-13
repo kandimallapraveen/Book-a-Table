@@ -27,17 +27,29 @@ const coupons = [
   {
     bank: "Paytm",
     title: "10% OFF",
+<<<<<<< HEAD
     subtitle: " pay withPaytm  10% offer",
+=======
+    subtitle: "pay with paytm 10% offer",
+>>>>>>> d6a9f9f (Updated feature X and fixed bug Y)
   },
   {
     bank: "HDFC Bank",
     title: "10% OFF",
+<<<<<<< HEAD
     subtitle: "pay with HDFC Bank  10% offer",
+=======
+    subtitle: "pay with HDFC 10% offer",
+>>>>>>> d6a9f9f (Updated feature X and fixed bug Y)
   },
   {
     bank: "PhonePe",
     title: "₹150 CASHBACK",
+<<<<<<< HEAD
     subtitle: " pay withPhonePe  ₹150 CASHBACK",
+=======
+    subtitle: "pay with phonepe and get ₹150 CASHBACK",
+>>>>>>> d6a9f9f (Updated feature X and fixed bug Y)
   },
 ];
 
