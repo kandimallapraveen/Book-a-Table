@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
+import { useAppTheme } from "../contexts/ThemeContext";
 
 type GuestSelectorProps = {
   guests: number;
@@ -13,6 +14,7 @@ export default function GuestSelector({
   minGuests = 1,
   maxGuests = 20,
 }: GuestSelectorProps) {
+  const { colors } = useAppTheme();
   const decreaseGuests = () => {
     if (guests > minGuests) {
       onChange(guests - 1);
@@ -28,7 +30,7 @@ export default function GuestSelector({
   return (
     <View
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.card,
         borderRadius: 14,
         padding: 4,
         marginVertical: 10,
@@ -46,7 +48,7 @@ export default function GuestSelector({
         style={{
           fontSize: 16,
           fontWeight: "800",
-          color: "#222222",
+          color: colors.text,
           marginBottom: -10,
         }}
       >
@@ -68,7 +70,7 @@ export default function GuestSelector({
             width: 32,
             height: 32,
             borderRadius: 18,
-            backgroundColor: guests <= minGuests ? "#E5E5E5" : "#08752F",
+            backgroundColor: guests <= minGuests ? colors.border : colors.primary,
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -77,7 +79,7 @@ export default function GuestSelector({
             style={{
               fontSize: 24,
               fontWeight: "700",
-              color: guests <= minGuests ? "#999999" : "#FFFFFF",
+              color: guests <= minGuests ? colors.secondaryText : "#FFFFFF",
             }}
           >
             −
@@ -94,7 +96,7 @@ export default function GuestSelector({
             style={{
               fontSize: 28,
               fontWeight: "800",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             {guests}
@@ -103,7 +105,7 @@ export default function GuestSelector({
           <Text
             style={{
               fontSize: 12,
-              color: "#777777",
+              color: colors.secondaryText,
               marginTop: 2,
             }}
           >
@@ -119,7 +121,7 @@ export default function GuestSelector({
             width: 44,
             height: 44,
             borderRadius: 22,
-            backgroundColor: guests >= maxGuests ? "#E5E5E5" : "#08752F",
+            backgroundColor: guests >= maxGuests ? colors.border : colors.primary,
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -128,7 +130,7 @@ export default function GuestSelector({
             style={{
               fontSize: 24,
               fontWeight: "700",
-              color: guests >= maxGuests ? "#999999" : "#FFFFFF",
+              color: guests >= maxGuests ? colors.secondaryText : "#FFFFFF",
             }}
           >
             +
@@ -139,7 +141,7 @@ export default function GuestSelector({
       <Text
         style={{
           fontSize: 11,
-          color: "#888888",
+          color: colors.secondaryText,
           textAlign: "center",
           marginTop: 10,
         }}

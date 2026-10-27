@@ -1,3 +1,4 @@
+import { useAppTheme } from "@/contexts/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
@@ -26,6 +27,7 @@ type Booking = {
 };
 
 export default function Reorder() {
+  const { colors } = useAppTheme();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -142,7 +144,7 @@ export default function Reorder() {
       <View
         key={booking.id}
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
           borderRadius: 13,
           marginBottom: 12,
           overflow: "hidden",
@@ -179,16 +181,27 @@ export default function Reorder() {
             style={{
               fontSize: 16,
               fontWeight: "800",
-              color: "#171717",
-              marginBottom: 2,
+              color: colors.text,
+              marginBottom: 4,
             }}
           >
-            Table Booking
+            {booking.restaurantName || "Restaurant"}
+          </Text>
+
+          <Text
+            numberOfLines={2}
+            style={{
+              fontSize: 12,
+              color: colors.secondaryText,
+              marginBottom: 8,
+            }}
+          >
+            📍 {booking.location || "Location not available"}
           </Text>
 
           <View
             style={{
-              backgroundColor: "#F8F8F8",
+              backgroundColor: colors.background,
               borderRadius: 9,
               paddingVertical: 5,
               paddingHorizontal: 8,
@@ -214,7 +227,7 @@ export default function Reorder() {
               <Text
                 style={{
                   fontSize: 12,
-                  color: "#333333",
+                  color: colors.text,
                   fontWeight: "600",
                 }}
               >
@@ -241,7 +254,7 @@ export default function Reorder() {
               <Text
                 style={{
                   fontSize: 12,
-                  color: "#333333",
+                  color: colors.text,
                   fontWeight: "600",
                 }}
               >
@@ -268,7 +281,7 @@ export default function Reorder() {
               <Text
                 style={{
                   fontSize: 12,
-                  color: "#333333",
+                  color: colors.text,
                   fontWeight: "600",
                 }}
               >
@@ -295,7 +308,7 @@ export default function Reorder() {
                 <Text
                   style={{
                     fontSize: 12,
-                    color: "#333333",
+                    color: colors.text,
                     fontWeight: "600",
                   }}
                 >
@@ -317,7 +330,7 @@ export default function Reorder() {
               style={{
                 flex: 1,
                 height: 38,
-                backgroundColor: "#FC8019",
+                backgroundColor: colors.primary,
                 borderRadius: 8,
                 justifyContent: "center",
                 alignItems: "center",
@@ -325,7 +338,7 @@ export default function Reorder() {
             >
               <Text
                 style={{
-                  color: "#FFFFFF",
+                  color: colors.card,
                   fontSize: 13,
                   fontWeight: "800",
                 }}
@@ -340,7 +353,7 @@ export default function Reorder() {
               style={{
                 width: 90,
                 height: 38,
-                backgroundColor: "#FFF0F0",
+                backgroundColor: colors.iconBackground,
                 borderRadius: 8,
                 justifyContent: "center",
                 alignItems: "center",
@@ -348,7 +361,7 @@ export default function Reorder() {
             >
               <Text
                 style={{
-                  color: "#D32F2F",
+                  color: colors.primary,
                   fontSize: 12,
                   fontWeight: "700",
                 }}
@@ -366,12 +379,12 @@ export default function Reorder() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F7F8FA",
+        backgroundColor: colors.background,
       }}
     >
       <View
         style={{
-          backgroundColor: "#FC8019",
+          backgroundColor: colors.primary,
           paddingHorizontal: 12,
           paddingTop: 5,
           paddingBottom: 8,
@@ -398,7 +411,7 @@ export default function Reorder() {
         >
           <Text
             style={{
-              color: "#FFFFFF",
+              color: colors.card,
               fontSize: 30,
               lineHeight: 32,
               fontWeight: "300",
@@ -415,7 +428,7 @@ export default function Reorder() {
         >
           <Text
             style={{
-              color: "#FFFFFF",
+              color: colors.card,
               fontSize: 18,
               fontWeight: "800",
             }}
@@ -425,8 +438,8 @@ export default function Reorder() {
 
           <Text
             style={{
-              color: "#FFF4EA",
-              fontSize: 11,
+              color: colors.secondaryText,
+              fontSize: 14,
               marginTop: 0,
             }}
           >
@@ -454,7 +467,7 @@ export default function Reorder() {
             <Text
               style={{
                 fontSize: 12,
-                color: "#777777",
+                color: colors.secondaryText,
               }}
             >
               Loading bookings...
@@ -482,7 +495,7 @@ export default function Reorder() {
               style={{
                 fontSize: 17,
                 fontWeight: "800",
-                color: "#171717",
+                color: colors.text,
                 marginBottom: 5,
               }}
             >
@@ -492,34 +505,13 @@ export default function Reorder() {
             <Text
               style={{
                 fontSize: 12,
-                color: "#777777",
+                color: colors.secondaryText,
                 textAlign: "center",
                 marginBottom: 16,
               }}
             >
               Your previous bookings will appear here.
             </Text>
-
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => router.push("/home")}
-              style={{
-                backgroundColor: "#FC8019",
-                paddingHorizontal: 18,
-                paddingVertical: 9,
-                borderRadius: 8,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#FFFFFF",
-                  fontWeight: "800",
-                  fontSize: 12,
-                }}
-              >
-                Book a Table
-              </Text>
-            </TouchableOpacity>
           </View>
         ) : (
           bookings.map(renderBookingCard)

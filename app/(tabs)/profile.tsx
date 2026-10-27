@@ -1,31 +1,64 @@
+import type { ThemeType } from "@/constants/appTheme";
+import { useAppTheme } from "@/contexts/ThemeContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Profile() {
+  const { theme, colors, setTheme } = useAppTheme();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const [editMode, setEditMode] = useState(false);
-
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
 
+  const [showThemes, setShowThemes] = useState(false);
+
   useEffect(() => {
-    loadProfile();
+    let isMounted = true;
+
+    const load = async () => {
+      try {
+        const [storedName, storedEmail] = await AsyncStorage.multiGet([
+          "userName",
+          "userEmail",
+        ]);
+
+        if (isMounted) {
+          setName(storedName[1] || "");
+          setEmail(storedEmail[1] || "");
+        }
+      } catch (error) {
+        console.log("Profile loading error:", error);
+      }
+    };
+
+    void load();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const loadProfile = async () => {
+  const handleSelectTheme = async (selectedTheme: ThemeType) => {
     try {
-      const storedName = await AsyncStorage.getItem("userName");
-      const storedEmail = await AsyncStorage.getItem("userEmail");
+      await setTheme(selectedTheme);
 
-      setName(storedName || "");
-      setEmail(storedEmail || "");
+      setShowThemes(false);
     } catch (error) {
-      console.log("Profile loading error:", error);
+      console.log("Theme saving error:", error);
+      Alert.alert("Error", "Unable to save theme.");
     }
   };
 
@@ -57,13 +90,11 @@ export default function Profile() {
 
       setName(editName.trim());
       setEmail(editEmail.trim());
-
       setEditMode(false);
 
       Alert.alert("Success", "Profile updated successfully!");
     } catch (error) {
       console.log("Profile update error:", error);
-
       Alert.alert("Error", "Unable to update profile.");
     }
   };
@@ -83,15 +114,12 @@ export default function Profile() {
       {
         text: "Logout",
         style: "destructive",
-
         onPress: async () => {
           try {
             await AsyncStorage.removeItem("isLoggedIn");
-
             router.replace("/auth/login" as any);
           } catch (error) {
             console.log("Logout error:", error);
-
             Alert.alert("Error", "Unable to logout. Please try again.");
           }
         },
@@ -111,13 +139,15 @@ export default function Profile() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F7F8F7",
+        backgroundColor: colors.background,
       }}
     >
-      <View
-        style={{
+      <ScrollView
+        contentContainerStyle={{
           padding: 20,
+          paddingBottom: 35,
         }}
+        keyboardShouldPersistTaps="handled"
       >
         <View
           style={{
@@ -132,27 +162,20 @@ export default function Profile() {
               width: 40,
               height: 40,
               borderRadius: 20,
-              backgroundColor: "white",
+              backgroundColor: colors.card,
               justifyContent: "center",
               alignItems: "center",
               marginRight: 10,
             }}
           >
-            <Text
-              style={{
-                fontSize: 30,
-                color: "#222",
-              }}
-            >
-              ‹
-            </Text>
+            <Text style={{ fontSize: 30, color: colors.text }}>‹</Text>
           </TouchableOpacity>
 
           <Text
             style={{
               fontSize: 28,
               fontWeight: "900",
-              color: "#222",
+              color: colors.text,
             }}
           >
             Profile
@@ -163,13 +186,13 @@ export default function Profile() {
           <>
             <View
               style={{
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderRadius: 18,
                 padding: 20,
                 flexDirection: "row",
                 alignItems: "center",
                 borderWidth: 1,
-                borderColor: "#EEEEEE",
+                borderColor: colors.border,
               }}
             >
               <View
@@ -177,14 +200,14 @@ export default function Profile() {
                   width: 65,
                   height: 65,
                   borderRadius: 33,
-                  backgroundColor: "#FC8019",
+                  backgroundColor: colors.primary,
                   justifyContent: "center",
                   alignItems: "center",
                 }}
               >
                 <Text
                   style={{
-                    color: "white",
+                    color: "#FFFFFF",
                     fontSize: 28,
                     fontWeight: "900",
                   }}
@@ -193,17 +216,12 @@ export default function Profile() {
                 </Text>
               </View>
 
-              <View
-                style={{
-                  marginLeft: 16,
-                  flex: 1,
-                }}
-              >
+              <View style={{ marginLeft: 16, flex: 1 }}>
                 <Text
                   style={{
                     fontSize: 20,
                     fontWeight: "800",
-                    color: "#222",
+                    color: colors.text,
                   }}
                 >
                   {name || "User"}
@@ -212,7 +230,7 @@ export default function Profile() {
                 <Text
                   style={{
                     fontSize: 13,
-                    color: "#777",
+                    color: colors.secondaryText,
                     marginTop: 5,
                   }}
                 >
@@ -225,7 +243,7 @@ export default function Profile() {
               style={{
                 fontSize: 16,
                 fontWeight: "800",
-                color: "#333",
+                color: colors.text,
                 marginTop: 28,
                 marginBottom: 12,
               }}
@@ -235,14 +253,14 @@ export default function Profile() {
 
             <TouchableOpacity
               style={{
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderRadius: 15,
                 padding: 15,
                 flexDirection: "row",
                 alignItems: "center",
                 marginBottom: 10,
                 borderWidth: 1,
-                borderColor: "#EEEEEE",
+                borderColor: colors.border,
               }}
               onPress={handleEditProfile}
             >
@@ -251,7 +269,7 @@ export default function Profile() {
                   width: 43,
                   height: 43,
                   borderRadius: 12,
-                  backgroundColor: "#FFF0E6",
+                  backgroundColor: colors.iconBackground,
                   justifyContent: "center",
                   alignItems: "center",
                 }}
@@ -259,17 +277,12 @@ export default function Profile() {
                 <Text>✏️</Text>
               </View>
 
-              <View
-                style={{
-                  flex: 1,
-                  marginLeft: 13,
-                }}
-              >
+              <View style={{ flex: 1, marginLeft: 13 }}>
                 <Text
                   style={{
                     fontSize: 14,
                     fontWeight: "800",
-                    color: "#222",
+                    color: colors.text,
                   }}
                 >
                   Edit Profile
@@ -278,7 +291,7 @@ export default function Profile() {
                 <Text
                   style={{
                     fontSize: 11,
-                    color: "#888",
+                    color: colors.secondaryText,
                     marginTop: 4,
                   }}
                 >
@@ -286,26 +299,21 @@ export default function Profile() {
                 </Text>
               </View>
 
-              <Text
-                style={{
-                  fontSize: 28,
-                  color: "#999",
-                }}
-              >
+              <Text style={{ fontSize: 28, color: colors.secondaryText }}>
                 ›
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={{
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderRadius: 15,
                 padding: 15,
                 flexDirection: "row",
                 alignItems: "center",
                 marginBottom: 10,
                 borderWidth: 1,
-                borderColor: "#EEEEEE",
+                borderColor: colors.border,
               }}
               onPress={() => router.push("/(tabs)/bookings" as any)}
             >
@@ -314,7 +322,7 @@ export default function Profile() {
                   width: 43,
                   height: 43,
                   borderRadius: 12,
-                  backgroundColor: "#FFF0E6",
+                  backgroundColor: colors.iconBackground,
                   justifyContent: "center",
                   alignItems: "center",
                 }}
@@ -322,17 +330,12 @@ export default function Profile() {
                 <Text>📖</Text>
               </View>
 
-              <View
-                style={{
-                  flex: 1,
-                  marginLeft: 13,
-                }}
-              >
+              <View style={{ flex: 1, marginLeft: 13 }}>
                 <Text
                   style={{
                     fontSize: 14,
                     fontWeight: "800",
-                    color: "#222",
+                    color: colors.text,
                   }}
                 >
                   My Bookings
@@ -341,7 +344,7 @@ export default function Profile() {
                 <Text
                   style={{
                     fontSize: 11,
-                    color: "#888",
+                    color: colors.secondaryText,
                     marginTop: 4,
                   }}
                 >
@@ -349,21 +352,211 @@ export default function Profile() {
                 </Text>
               </View>
 
-              <Text
-                style={{
-                  fontSize: 28,
-                  color: "#999",
-                }}
-              >
+              <Text style={{ fontSize: 28, color: colors.secondaryText }}>
                 ›
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: colors.card,
+                borderRadius: 15,
+                padding: 15,
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 10,
+                borderWidth: 1,
+                borderColor: colors.border,
+              }}
+              onPress={() => setShowThemes(!showThemes)}
+            >
+              <View
+                style={{
+                  width: 43,
+                  height: 43,
+                  borderRadius: 12,
+                  backgroundColor: colors.iconBackground,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text>🎨</Text>
+              </View>
+
+              <View style={{ flex: 1, marginLeft: 13 }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "800",
+                    color: colors.text,
+                  }}
+                >
+                  Themes
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: colors.secondaryText,
+                    marginTop: 4,
+                  }}
+                >
+                  Change your app appearance
+                </Text>
+              </View>
+
+              <Text style={{ fontSize: 28, color: colors.secondaryText }}>
+                {showThemes ? "⌄" : "›"}
+              </Text>
+            </TouchableOpacity>
+
+            {showThemes && (
+              <View style={{ gap: 10, marginBottom: 15 }}>
+                <TouchableOpacity
+                  onPress={() => handleSelectTheme("light")}
+                  style={{
+                    backgroundColor: appThemeColor("light"),
+                    padding: 18,
+                    borderRadius: 14,
+                    borderWidth: 2,
+                    borderColor: theme === "light" ? "#FC8019" : "#EEEEEE",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View>
+                    <Text
+                      style={{
+                        color: "#222222",
+                        fontSize: 16,
+                        fontWeight: "700",
+                      }}
+                    >
+                      ☀️ Light Theme
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#777777",
+                        marginTop: 5,
+                      }}
+                    >
+                      White background
+                    </Text>
+                  </View>
+
+                  {theme === "light" && (
+                    <Text
+                      style={{
+                        color: "#FC8019",
+                        fontSize: 20,
+                        fontWeight: "900",
+                      }}
+                    >
+                      ✓
+                    </Text>
+                  )}
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => handleSelectTheme("dark")}
+                  style={{
+                    backgroundColor: "#222222",
+                    padding: 18,
+                    borderRadius: 14,
+                    borderWidth: 2,
+                    borderColor: theme === "dark" ? "#FC8019" : "#444444",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View>
+                    <Text
+                      style={{
+                        color: "#FFFFFF",
+                        fontSize: 16,
+                        fontWeight: "700",
+                      }}
+                    >
+                      🌙 Dark Theme
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#CCCCCC",
+                        marginTop: 5,
+                      }}
+                    >
+                      Dark background
+                    </Text>
+                  </View>
+
+                  {theme === "dark" && (
+                    <Text
+                      style={{
+                        color: "#FC8019",
+                        fontSize: 20,
+                        fontWeight: "900",
+                      }}
+                    >
+                      ✓
+                    </Text>
+                  )}
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => handleSelectTheme("custom")}
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    padding: 18,
+                    borderRadius: 14,
+                    borderWidth: 2,
+                    borderColor: theme === "custom" ? "#7C3AED" : "#EEEEEE",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View>
+                    <Text
+                      style={{
+                        color: "#7C3AED",
+                        fontSize: 16,
+                        fontWeight: "700",
+                      }}
+                    >
+                      🎨 Custom Theme
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#777777",
+                        marginTop: 5,
+                      }}
+                    >
+                      Personalize your colors
+                    </Text>
+                  </View>
+
+                  {theme === "custom" && (
+                    <Text
+                      style={{
+                        color: "#7C3AED",
+                        fontSize: 20,
+                        fontWeight: "900",
+                      }}
+                    >
+                      ✓
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            )}
 
             <Text
               style={{
                 fontSize: 16,
                 fontWeight: "800",
-                color: "#333",
+                color: colors.text,
                 marginTop: 28,
                 marginBottom: 12,
               }}
@@ -375,7 +568,7 @@ export default function Profile() {
               style={{
                 height: 52,
                 borderRadius: 13,
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderWidth: 1,
                 borderColor: "#FFD5D5",
                 flexDirection: "row",
@@ -411,7 +604,7 @@ export default function Profile() {
               style={{
                 fontSize: 20,
                 fontWeight: "800",
-                color: "#222",
+                color: colors.text,
                 marginBottom: 25,
               }}
             >
@@ -422,7 +615,7 @@ export default function Profile() {
               style={{
                 fontSize: 14,
                 fontWeight: "700",
-                color: "#333",
+                color: colors.text,
                 marginBottom: 7,
               }}
             >
@@ -433,16 +626,16 @@ export default function Profile() {
               value={editName}
               onChangeText={setEditName}
               placeholder="Enter your name"
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.secondaryText}
               style={{
                 height: 52,
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderWidth: 1,
-                borderColor: "#DDDDDD",
+                borderColor: colors.inputBorder,
                 borderRadius: 12,
                 paddingHorizontal: 15,
                 fontSize: 14,
-                color: "#222",
+                color: colors.text,
                 marginBottom: 18,
               }}
             />
@@ -451,7 +644,7 @@ export default function Profile() {
               style={{
                 fontSize: 14,
                 fontWeight: "700",
-                color: "#333",
+                color: colors.text,
                 marginBottom: 7,
               }}
             >
@@ -462,18 +655,18 @@ export default function Profile() {
               value={editEmail}
               onChangeText={setEditEmail}
               placeholder="Enter your email"
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.secondaryText}
               keyboardType="email-address"
               autoCapitalize="none"
               style={{
                 height: 52,
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderWidth: 1,
-                borderColor: "#DDDDDD",
+                borderColor: colors.inputBorder,
                 borderRadius: 12,
                 paddingHorizontal: 15,
                 fontSize: 14,
-                color: "#222",
+                color: colors.text,
                 marginBottom: 18,
               }}
             />
@@ -481,7 +674,7 @@ export default function Profile() {
             <TouchableOpacity
               style={{
                 height: 52,
-                backgroundColor: "#FC8019",
+                backgroundColor: colors.primary,
                 borderRadius: 13,
                 justifyContent: "center",
                 alignItems: "center",
@@ -491,7 +684,7 @@ export default function Profile() {
             >
               <Text
                 style={{
-                  color: "white",
+                  color: "#FFFFFF",
                   fontSize: 16,
                   fontWeight: "800",
                 }}
@@ -500,23 +693,22 @@ export default function Profile() {
               </Text>
             </TouchableOpacity>
 
-            {/* Cancel */}
             <TouchableOpacity
               style={{
                 height: 52,
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 borderRadius: 13,
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 12,
                 borderWidth: 1,
-                borderColor: "#DDDDDD",
+                borderColor: colors.inputBorder,
               }}
               onPress={handleCancel}
             >
               <Text
                 style={{
-                  color: "#555",
+                  color: colors.text,
                   fontSize: 15,
                   fontWeight: "700",
                 }}
@@ -526,7 +718,11 @@ export default function Profile() {
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
+}
+
+function appThemeColor(theme: "light") {
+  return "#FFFFFF";
 }

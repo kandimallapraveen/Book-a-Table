@@ -1,5 +1,6 @@
 import { VideoView, useVideoPlayer } from "expo-video";
 import { useState } from "react";
+import { useAppTheme } from "../contexts/ThemeContext";
 import {
   Dimensions,
   Image,
@@ -46,6 +47,7 @@ const foodPhotos = [
 const restaurantVideo = require("../assets/images/restaurant-video.mp4");
 
 export default function PhotosSection() {
+  const { colors } = useAppTheme();
   const [selectedTab, setSelectedTab] = useState<"Ambience" | "Food">(
     "Ambience",
   );
@@ -86,7 +88,7 @@ export default function PhotosSection() {
           style={{
             fontSize: 22,
             fontWeight: "800",
-            color: "#171717",
+            color: colors.text,
           }}
         >
           Photos
@@ -97,7 +99,7 @@ export default function PhotosSection() {
             style={{
               fontSize: 14,
               fontWeight: "700",
-              color: "#FC8019",
+              color: colors.primary,
             }}
           >
             View All
@@ -118,7 +120,9 @@ export default function PhotosSection() {
             paddingHorizontal: 18,
             marginRight: 10,
             borderRadius: 20,
-            backgroundColor: selectedTab === "Ambience" ? "#FC8019" : "#F1F1F1",
+            backgroundColor: selectedTab === "Ambience"
+              ? colors.primary
+              : colors.iconBackground,
           }}
           onPress={() => setSelectedTab("Ambience")}
         >
@@ -126,7 +130,9 @@ export default function PhotosSection() {
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: selectedTab === "Ambience" ? "#FFFFFF" : "#666666",
+              color: selectedTab === "Ambience"
+                ? "#FFFFFF"
+                : colors.secondaryText,
             }}
           >
             Ambience
@@ -139,7 +145,9 @@ export default function PhotosSection() {
             paddingHorizontal: 18,
             marginRight: 10,
             borderRadius: 20,
-            backgroundColor: selectedTab === "Food" ? "#FC8019" : "#F1F1F1",
+            backgroundColor: selectedTab === "Food"
+              ? colors.primary
+              : colors.iconBackground,
           }}
           onPress={() => setSelectedTab("Food")}
         >
@@ -147,7 +155,7 @@ export default function PhotosSection() {
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: selectedTab === "Food" ? "#FFFFFF" : "#666666",
+              color: selectedTab === "Food" ? "#FFFFFF" : colors.secondaryText,
             }}
           >
             Food

@@ -1,4 +1,5 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useAppTheme } from "../contexts/ThemeContext";
 
 type BookingCardProps = {
   id: string;
@@ -26,12 +27,13 @@ export default function BookingCard({
   onCancel,
   onRemove,
 }: BookingCardProps) {
+  const { colors } = useAppTheme();
   const isCancelled = status === "Cancelled";
 
   return (
     <View
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.card,
         borderRadius: 14,
         marginHorizontal: 12,
         marginVertical: 6,
@@ -68,7 +70,7 @@ export default function BookingCard({
               width: 70,
               height: 70,
               borderRadius: 11,
-              backgroundColor: "#FFF1E6",
+              backgroundColor: colors.iconBackground,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -94,7 +96,7 @@ export default function BookingCard({
             style={{
               fontSize: 16,
               fontWeight: "800",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             {restaurantName}
@@ -105,7 +107,7 @@ export default function BookingCard({
               numberOfLines={1}
               style={{
                 fontSize: 11,
-                color: "#777777",
+                color: colors.secondaryText,
                 marginTop: 3,
               }}
             >
@@ -117,7 +119,9 @@ export default function BookingCard({
             style={{
               alignSelf: "flex-start",
               marginTop: 6,
-              backgroundColor: isCancelled ? "#FFE8E8" : "#FFF1E6",
+              backgroundColor: isCancelled
+                ? colors.border
+                : colors.iconBackground,
               paddingHorizontal: 8,
               paddingVertical: 4,
               borderRadius: 7,
@@ -127,7 +131,7 @@ export default function BookingCard({
               style={{
                 fontSize: 10,
                 fontWeight: "800",
-                color: isCancelled ? "#D32F2F" : "#FC8019",
+                color: isCancelled ? colors.secondaryText : colors.primary,
               }}
             >
               {status}
@@ -139,7 +143,7 @@ export default function BookingCard({
       <View
         style={{
           height: 1,
-          backgroundColor: "#EEEEEE",
+          backgroundColor: colors.border,
           marginVertical: 11,
         }}
       />
@@ -158,7 +162,7 @@ export default function BookingCard({
           <Text
             style={{
               fontSize: 9,
-              color: "#888888",
+              color: colors.secondaryText,
               marginBottom: 3,
               fontWeight: "700",
             }}
@@ -171,7 +175,7 @@ export default function BookingCard({
             style={{
               fontSize: 12,
               fontWeight: "700",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             📅{" "}
@@ -196,7 +200,7 @@ export default function BookingCard({
           <Text
             style={{
               fontSize: 9,
-              color: "#888888",
+              color: colors.secondaryText,
               marginBottom: 3,
               fontWeight: "700",
             }}
@@ -209,7 +213,7 @@ export default function BookingCard({
             style={{
               fontSize: 12,
               fontWeight: "700",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             🕐 {time}
@@ -224,7 +228,7 @@ export default function BookingCard({
           <Text
             style={{
               fontSize: 9,
-              color: "#888888",
+              color: colors.secondaryText,
               marginBottom: 3,
               fontWeight: "700",
             }}
@@ -236,7 +240,7 @@ export default function BookingCard({
             style={{
               fontSize: 12,
               fontWeight: "700",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             👥 {guests}
@@ -258,7 +262,7 @@ export default function BookingCard({
             flex: 1,
             height: 38,
             borderRadius: 9,
-            backgroundColor: "#FC8019",
+            backgroundColor: colors.primary,
             alignItems: "center",
             justifyContent: "center",
           }}

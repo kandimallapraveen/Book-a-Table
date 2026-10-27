@@ -1,18 +1,19 @@
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
-  Alert,
   Dimensions,
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
+  ScrollViewInstance,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../contexts/ThemeContext";
 
 import * as Location from "expo-location";
 import BranchSelector from "../components/BranchSelector";
@@ -74,9 +75,10 @@ function Header({
   hasSelectedBranch: boolean;
 }) {
   const [showRestaurantInfo, setShowRestaurantInfo] = useState(true);
+  const { colors } = useAppTheme();
 
   return (
-    <View style={headerStyles.container}>
+    <View style={[headerStyles.container, { backgroundColor: colors.primary }]}>
       <View style={headerStyles.left}>
         <View style={headerStyles.restaurantInfo}>
           <View style={headerStyles.restaurantTitleRow}>
@@ -87,16 +89,20 @@ function Header({
               }}
               activeOpacity={0.8}
             >
-              <Text style={headerStyles.smallButtonText}>
+              <Text
+                style={[headerStyles.smallButtonText, { color: "#FFFFFF" }]}
+              >
                 {showRestaurantInfo ? "▼" : "▲"}
               </Text>
             </TouchableOpacity>
 
-            <Text style={headerStyles.restaurantName}>Paradise Biryani</Text>
+            <Text style={[headerStyles.restaurantName, { color: "#FFFFFF" }]}>
+              Paradise Biryani
+            </Text>
           </View>
 
           {showRestaurantInfo && (
-            <Text style={headerStyles.location}>
+            <Text style={[headerStyles.location, { color: colors.card }]}>
               📍{" "}
               {hasSelectedBranch && selectedBranch
                 ? selectedBranch.location
@@ -107,7 +113,7 @@ function Header({
       </View>
 
       <TouchableOpacity
-        style={headerStyles.profile}
+        style={[headerStyles.profile, { backgroundColor: colors.card }]}
         onPress={onProfilePress}
         activeOpacity={0.8}
       >
@@ -219,8 +225,9 @@ const tableImages = [
 
 function HeroBanner({ onBookTable }: { onBookTable: () => void }) {
   const [activeImage, setActiveImage] = useState(0);
+  const { colors } = useAppTheme();
 
-  const carouselRef = useRef<ScrollView>(null);
+  const carouselRef = useRef<ScrollViewInstance>(null);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetX = event.nativeEvent.contentOffset.x;
@@ -242,7 +249,7 @@ function HeroBanner({ onBookTable }: { onBookTable: () => void }) {
   };
 
   return (
-    <View style={heroStyles.card}>
+    <View style={[heroStyles.card, { backgroundColor: colors.card }]}>
       <View style={heroStyles.imageContainer}>
         <ScrollView
           ref={carouselRef}
@@ -450,17 +457,29 @@ function SectionHeader({
   rightText?: string;
   onRightPress?: () => void;
 }) {
+  const { colors } = useAppTheme();
+
   return (
     <View style={sectionStyles.container}>
       <View>
-        <Text style={sectionStyles.title}>{title}</Text>
+        <Text style={[sectionStyles.title, { color: colors.text }]}>
+          {title}
+        </Text>
 
-        {subtitle && <Text style={sectionStyles.subtitle}>{subtitle}</Text>}
+        {subtitle && (
+          <Text
+            style={[sectionStyles.subtitle, { color: colors.secondaryText }]}
+          >
+            {subtitle}
+          </Text>
+        )}
       </View>
 
       {rightText && onRightPress && (
         <TouchableOpacity onPress={onRightPress}>
-          <Text style={sectionStyles.rightText}>{rightText}</Text>
+          <Text style={[sectionStyles.rightText, { color: colors.primary }]}>
+            {rightText}
+          </Text>
         </TouchableOpacity>
       )}
     </View>
@@ -504,34 +523,66 @@ function QuickActions({
   onBookings: () => void;
   onReorder: () => void;
 }) {
+  const { colors } = useAppTheme();
+
   return (
     <View style={quickStyles.row}>
       <TouchableOpacity
-        style={[quickStyles.card, { marginRight: 6 }]}
+        style={[
+          quickStyles.card,
+          {
+            marginRight: 6,
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+          },
+        ]}
         onPress={onBookings}
         activeOpacity={0.85}
       >
-        <View style={quickStyles.iconBox}>
+        <View
+          style={[
+            quickStyles.iconBox,
+            { backgroundColor: colors.iconBackground },
+          ]}
+        >
           <Text style={quickStyles.icon}>📅</Text>
         </View>
 
-        <Text style={quickStyles.title}>My Bookings</Text>
+        <Text style={[quickStyles.title, { color: colors.text }]}>
+          My Bookings
+        </Text>
 
-        <Text style={quickStyles.subtitle}>View reservations</Text>
+        <Text style={[quickStyles.subtitle, { color: colors.secondaryText }]}>
+          View reservations
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[quickStyles.card, { marginLeft: 6 }]}
+        style={[
+          quickStyles.card,
+          {
+            marginLeft: 6,
+            backgroundColor: colors.card,
+            borderColor: colors.border,
+          },
+        ]}
         onPress={onReorder}
         activeOpacity={0.85}
       >
-        <View style={quickStyles.iconBox}>
+        <View
+          style={[
+            quickStyles.iconBox,
+            { backgroundColor: colors.iconBackground },
+          ]}
+        >
           <Text style={quickStyles.icon}>🔄</Text>
         </View>
 
-        <Text style={quickStyles.title}>Reorder</Text>
+        <Text style={[quickStyles.title, { color: colors.text }]}>Reorder</Text>
 
-        <Text style={quickStyles.subtitle}>Book again</Text>
+        <Text style={[quickStyles.subtitle, { color: colors.secondaryText }]}>
+          Book again
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -588,50 +639,36 @@ const quickStyles = StyleSheet.create({
   },
 });
 
-function WhyBookWithUs({
-  onQuickBooking,
-  onNoWaiting,
-  onSecure,
-}: {
-  onQuickBooking: () => void;
-  onNoWaiting: () => void;
-  onSecure: () => void;
-}) {
+function WhyBookWithUs() {
   return (
     <View style={benefitStyles.row}>
       <TouchableOpacity
         style={[benefitStyles.card, { marginRight: 4 }]}
-        onPress={onQuickBooking}
-        activeOpacity={0.85}
+        onPress={() => {}}
+        activeOpacity={1}
       >
         <Text style={benefitStyles.icon}>⚡</Text>
-
         <Text style={benefitStyles.title}>Quick Booking</Text>
-
         <Text style={benefitStyles.subtitle}>Book instantly</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[benefitStyles.card, { marginHorizontal: 4 }]}
-        onPress={onNoWaiting}
-        activeOpacity={0.85}
+        onPress={() => {}}
+        activeOpacity={1}
       >
         <Text style={benefitStyles.icon}>🚫</Text>
-
         <Text style={benefitStyles.title}>No Waiting</Text>
-
         <Text style={benefitStyles.subtitle}>Skip queues</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[benefitStyles.card, { marginLeft: 4 }]}
-        onPress={onSecure}
-        activeOpacity={0.85}
+        onPress={() => {}}
+        activeOpacity={1}
       >
         <Text style={benefitStyles.icon}>🔒</Text>
-
         <Text style={benefitStyles.title}>Secure</Text>
-
         <Text style={benefitStyles.subtitle}>Safe booking</Text>
       </TouchableOpacity>
     </View>
@@ -643,32 +680,24 @@ const benefitStyles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 16,
   },
-
   card: {
     flex: 1,
-
     backgroundColor: COLORS.white,
-
     borderRadius: 15,
     padding: 12,
-
     borderWidth: 1,
     borderColor: "#F0F0F0",
-
     elevation: 2,
   },
-
   icon: {
     fontSize: 23,
     marginBottom: 8,
   },
-
   title: {
     fontSize: 11,
     fontWeight: "900",
     color: COLORS.text,
   },
-
   subtitle: {
     fontSize: 9,
     color: COLORS.lightText,
@@ -684,21 +713,17 @@ function BottomActionButtons({
   onBookTable: () => void;
 }) {
   const handlePayBill = () => {
-    if (!selectedBranch) {
-      Alert.alert(
-        "Select a branch",
-        "Please select a branch before paying the bill.",
-      );
-      return;
+    if (selectedBranch) {
+      router.push({
+        pathname: "/paybill",
+        params: {
+          branchName: selectedBranch.name,
+          branchLocation: selectedBranch.location,
+        },
+      });
+    } else {
+      router.push("/paybill" as any);
     }
-
-    router.push({
-      pathname: "/paybill",
-      params: {
-        branchName: selectedBranch.name,
-        branchLocation: selectedBranch.location,
-      },
-    });
   };
 
   return (
@@ -790,6 +815,8 @@ const actionStyles = StyleSheet.create({
 });
 
 export default function HomeScreen() {
+  const { colors } = useAppTheme();
+
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
 
   const [hasSelectedBranch, setHasSelectedBranch] = useState(false);
@@ -848,18 +875,6 @@ export default function HomeScreen() {
     }
   };
 
-  const handleQuickBooking = () => {
-    goToBooking();
-  };
-
-  const handleNoWaiting = () => {
-    goToBooking();
-  };
-
-  const handleEasySecure = () => {
-    goToBooking();
-  };
-
   const openBookings = () => {
     router.push("/(tabs)/bookings" as any);
   };
@@ -876,7 +891,7 @@ export default function HomeScreen() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: COLORS.background,
+        backgroundColor: colors.background,
       }}
       edges={["top", "left", "right"]}
     >
@@ -903,7 +918,7 @@ export default function HomeScreen() {
           <Text
             style={{
               fontSize: 13,
-              color: "#777777",
+              color: colors.secondaryText,
               fontWeight: "600",
               marginBottom: 7,
             }}
@@ -917,12 +932,12 @@ export default function HomeScreen() {
             style={{
               height: 48,
 
-              backgroundColor: COLORS.white,
+              backgroundColor: colors.card,
 
               borderRadius: 14,
 
               borderWidth: 1,
-              borderColor: "#EEEEEE",
+              borderColor: colors.border,
 
               flexDirection: "row",
               alignItems: "center",
@@ -948,7 +963,7 @@ export default function HomeScreen() {
 
                 borderRadius: 10,
 
-                backgroundColor: COLORS.primaryLight,
+                backgroundColor: colors.iconBackground,
 
                 alignItems: "center",
                 justifyContent: "center",
@@ -974,7 +989,7 @@ export default function HomeScreen() {
                 style={{
                   fontSize: 15,
                   fontWeight: "800",
-                  color: COLORS.text,
+                  color: colors.text,
                 }}
               >
                 Dine In
@@ -983,7 +998,7 @@ export default function HomeScreen() {
               <Text
                 style={{
                   fontSize: 11,
-                  color: "#777777",
+                  color: colors.secondaryText,
                   marginTop: 1,
                 }}
               >
@@ -1000,7 +1015,7 @@ export default function HomeScreen() {
 
                 borderRadius: 15,
 
-                backgroundColor: COLORS.primaryLight,
+                backgroundColor: colors.iconBackground,
 
                 alignItems: "center",
                 justifyContent: "center",
@@ -1027,11 +1042,7 @@ export default function HomeScreen() {
 
         <SectionHeader title="Why Book With Us?" />
 
-        <WhyBookWithUs
-          onQuickBooking={handleQuickBooking}
-          onNoWaiting={handleNoWaiting}
-          onSecure={handleEasySecure}
-        />
+        <WhyBookWithUs />
 
         <MenuSection />
 

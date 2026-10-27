@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAppTheme } from "@/contexts/ThemeContext";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import {
@@ -27,6 +28,7 @@ type Booking = {
 };
 
 export default function BookingsScreen() {
+  const { colors } = useAppTheme();
   const [bookings, setBookings] = useState<Booking[]>([]);
 
   const [cancelModalVisible, setCancelModalVisible] = useState(false);
@@ -217,12 +219,12 @@ export default function BookingsScreen() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F7F8F7",
+        backgroundColor: colors.background,
       }}
     >
       <View
         style={{
-          backgroundColor: "#FC8019",
+          backgroundColor: colors.primary,
           paddingHorizontal: 10,
           paddingVertical: 6,
           flexDirection: "row",
@@ -247,7 +249,7 @@ export default function BookingsScreen() {
         >
           <Text
             style={{
-              color: "#FFFFFF",
+              color: colors.card,
               fontSize: 21,
               fontWeight: "400",
             }}
@@ -290,7 +292,7 @@ export default function BookingsScreen() {
                 width: 70,
                 height: 70,
                 borderRadius: 35,
-                backgroundColor: "#FFF1E6",
+                backgroundColor: colors.iconBackground,
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: 14,
@@ -309,7 +311,7 @@ export default function BookingsScreen() {
               style={{
                 fontSize: 19,
                 fontWeight: "800",
-                color: "#222222",
+                color: colors.text,
                 textAlign: "center",
               }}
             >
@@ -319,7 +321,7 @@ export default function BookingsScreen() {
             <Text
               style={{
                 fontSize: 13,
-                color: "#777777",
+                color: colors.secondaryText,
                 textAlign: "center",
                 marginTop: 6,
                 lineHeight: 19,
@@ -327,30 +329,8 @@ export default function BookingsScreen() {
             >
               You haven't booked a table yet.
               {"\n"}
-              Find a restaurant and reserve your table.
+              reserve your table.
             </Text>
-
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={goToHome}
-              style={{
-                backgroundColor: "#FC8019",
-                paddingHorizontal: 28,
-                paddingVertical: 11,
-                borderRadius: 9,
-                marginTop: 18,
-              }}
-            >
-              <Text
-                style={{
-                  color: "#FFFFFF",
-                  fontSize: 14,
-                  fontWeight: "800",
-                }}
-              >
-                Book a Table
-              </Text>
-            </TouchableOpacity>
           </View>
         ) : (
           <>

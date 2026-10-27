@@ -1,24 +1,26 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useAppTheme } from "@/contexts/ThemeContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
 
-const ORANGE = "#FC8019";
-
 export default function TabLayout() {
+  const { colors } = useAppTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
 
-        tabBarActiveTintColor: ORANGE,
-        tabBarInactiveTintColor: "#888888",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.secondaryText,
 
         tabBarStyle: {
           height: 70,
-          marginBottom: 5,
+          marginBottom: 10,
           paddingTop: 8,
           paddingBottom: 10,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
+          borderTopColor: colors.border,
         },
       }}
     >
@@ -27,7 +29,11 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: () => (
-            <IconSymbol size={26} name="house.fill" color={ORANGE} />
+            <IconSymbol
+              size={26}
+              name="house.fill"
+              color={colors.primary}
+            />
           ),
         }}
       />
@@ -37,7 +43,11 @@ export default function TabLayout() {
         options={{
           title: "Bookings",
           tabBarIcon: () => (
-            <MaterialIcons name="calendar-month" size={28} color={ORANGE} />
+            <MaterialIcons
+              name="calendar-month"
+              size={28}
+              color={colors.primary}
+            />
           ),
         }}
       />
@@ -47,7 +57,7 @@ export default function TabLayout() {
         options={{
           title: "Reorder",
           tabBarIcon: () => (
-            <MaterialIcons name="sync" size={30} color={ORANGE} />
+            <MaterialIcons name="sync" size={30} color={colors.primary} />
           ),
         }}
       />
@@ -57,7 +67,11 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: () => (
-            <IconSymbol size={26} name="person.fill" color={ORANGE} />
+            <IconSymbol
+              size={26}
+              name="person.fill"
+              color={colors.primary}
+            />
           ),
         }}
       />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAppTheme } from "../contexts/ThemeContext";
 import {
   Image,
   Modal,
@@ -8,14 +9,6 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-
-const COLORS = {
-  primary: "#FC8019",
-  text: "#171717",
-  secondaryText: "#6B6B6B",
-  border: "#E8E8E8",
-  white: "#FFFFFF",
-};
 
 const biryaniImages = [
   require("../assets/images/menu-page-1.png"),
@@ -30,6 +23,7 @@ const tiffinImages = [
 ];
 
 const MenuSection = () => {
+  const { colors } = useAppTheme();
   const { width, height } = useWindowDimensions();
 
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
@@ -56,14 +50,14 @@ const MenuSection = () => {
             width: cardWidth,
             height: cardHeight,
 
-            backgroundColor: COLORS.white,
+            backgroundColor: colors.card,
 
             borderRadius: 18,
 
             overflow: "hidden",
 
             borderWidth: 1,
-            borderColor: COLORS.border,
+            borderColor: colors.border,
 
             elevation: 5,
 
@@ -136,12 +130,12 @@ const MenuSection = () => {
                   borderRadius: 10,
 
                   backgroundColor:
-                    currentIndex === index ? COLORS.primary : "#D0D0D0",
+                    currentIndex === index ? colors.primary : colors.border,
 
                   marginHorizontal: 3,
 
                   borderWidth: 1,
-                  borderColor: COLORS.white,
+                  borderColor: colors.card,
                 }}
               />
             ))}
@@ -168,7 +162,7 @@ const MenuSection = () => {
           style={{
             fontSize: 25,
             fontWeight: "800",
-            color: COLORS.text,
+            color: colors.text,
           }}
         >
           Menu
@@ -177,7 +171,7 @@ const MenuSection = () => {
         <Text
           style={{
             fontSize: 14,
-            color: COLORS.secondaryText,
+            color: colors.secondaryText,
             marginTop: 4,
           }}
         >
@@ -299,7 +293,7 @@ const MenuSection = () => {
                   height: selectedIndex === index ? 10 : 8,
                   borderRadius: 10,
                   backgroundColor:
-                    selectedIndex === index ? COLORS.primary : "#D0D0D0",
+                    selectedIndex === index ? colors.primary : colors.border,
                   marginHorizontal: 4,
                 }}
               />

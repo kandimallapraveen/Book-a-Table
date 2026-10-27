@@ -1,10 +1,11 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ScrollViewInstance,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,62 +13,89 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const COLORS = {
-  primary: "#FC8019",
-  text: "#171717",
-  secondaryText: "#6B6B6B",
-  background: "#F7F8FA",
-  white: "#FFFFFF",
-  border: "#E8E8E8",
-  green: "#0B8F55",
-};
+import { useAppTheme } from "../contexts/ThemeContext";
 
 const coupons = [
   {
     bank: "Paytm",
     title: "10% OFF",
-    subtitle: " pay withPaytm  10% offer",
+    subtitle: "Paytm 10% offer",
   },
   {
     bank: "HDFC Bank",
     title: "10% OFF",
-    subtitle: "pay with HDFC Bank  10% offer",
+    subtitle: "HDFC 10% offer",
   },
   {
     bank: "PhonePe",
-    title: "₹150 CASHBACK",
-    subtitle: " pay withPhonePe  ₹150 CASHBACK",
+    title: "₹5% off",
+    subtitle: "PhonePe 5% offer",
   },
 ];
 
 export default function PayBillPage() {
+  const { colors } = useAppTheme();
+  const COLORS = {
+    primary: colors.primary,
+    text: colors.text,
+    secondaryText: colors.secondaryText,
+    background: colors.background,
+    white: colors.card,
+    onPrimary: "#FFFFFF",
+    border: colors.border,
+  };
   const { width } = useWindowDimensions();
 
   const params = useLocalSearchParams<{
-    branchName?: string;
-    branchLocation?: string;
+    branchName?: string | string[];
+    branchLocation?: string | string[];
   }>();
 
-  const branchName = params.branchName?.toString() || "Paradise Biryani";
+  const branchName =
+    typeof params.branchName === "string"
+      ? params.branchName
+      : "Paradise Biryani";
 
-  const branchLocation = params.branchLocation?.toString() || "Hyderabad";
+  const branchLocation =
+    typeof params.branchLocation === "string"
+      ? params.branchLocation
+      : "Hyderabad";
 
   const [amount, setAmount] = useState("");
   const [couponIndex, setCouponIndex] = useState(0);
+  const carouselRef = useRef<ScrollViewInstance>(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCouponIndex((currentIndex) => {
+        const nextIndex = (currentIndex + 1) % coupons.length;
+
+        carouselRef.current?.scrollTo({
+          x: nextIndex * (width - 32),
+          animated: true,
+        });
+
+        return nextIndex;
+      });
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [width]);
 
   const handlePayBill = () => {
+    const totalAmount = Number(amount);
+
     if (!amount.trim()) {
       Alert.alert("Enter Amount", "Please enter the total bill amount.");
       return;
     }
 
-    if (Number(amount) <= 0) {
+    if (!Number.isFinite(totalAmount) || totalAmount <= 0) {
       Alert.alert("Invalid Amount", "Please enter a valid bill amount.");
       return;
     }
 
-    Alert.alert("Pay Bill", `Payment of ₹${amount} will be processed.`);
+    Alert.alert("Pay Bill", `Payment of ₹${totalAmount} will be processed.`);
   };
 
   return (
@@ -127,9 +155,7 @@ export default function PayBillPage() {
 
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: 130,
-          }}
+          contentContainerStyle={{ paddingBottom: 24 }}
         >
           <View
             style={{
@@ -216,7 +242,7 @@ export default function PayBillPage() {
                 value={amount}
                 onChangeText={(text) => setAmount(text.replace(/[^0-9]/g, ""))}
                 placeholder="0"
-                placeholderTextColor="#BDBDBD"
+                placeholderTextColor={COLORS.secondaryText}
                 keyboardType="number-pad"
                 textAlign="center"
                 style={{
@@ -240,115 +266,213 @@ export default function PayBillPage() {
             </Text>
           </View>
 
-          <View
-            style={{
-              marginTop: 30,
-            }}
-          >
-            <Text
+          <View style={{ marginTop: 30 }}>
+            <View
               style={{
-                fontSize: 19,
-                fontWeight: "800",
-                color: COLORS.text,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
                 paddingHorizontal: 16,
-                marginBottom: 12,
+                marginBottom: 14,
               }}
             >
-              Coupons & Offers
-            </Text>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 21,
+                    fontWeight: "900",
+                    color: COLORS.text,
+                  }}
+                >
+                  Coupons & Offers
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: COLORS.secondaryText,
+                    marginTop: 4,
+                  }}
+                >
+                  Save more on your bill
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  backgroundColor: colors.iconBackground,
+                  paddingHorizontal: 11,
+                  paddingVertical: 7,
+                  borderRadius: 20,
+                }}
+              >
+                <Text
+                  style={{
+                    color: COLORS.primary,
+                    fontSize: 11,
+                    fontWeight: "800",
+                  }}
+                >
+                  SPECIAL OFFERS
+                </Text>
+              </View>
+            </View>
 
             <ScrollView
+              ref={carouselRef}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
               decelerationRate="fast"
+              snapToInterval={width - 24}
+              snapToAlignment="start"
+              contentContainerStyle={{ paddingLeft: 12 }}
               onMomentumScrollEnd={(event) => {
                 const index = Math.round(
-                  event.nativeEvent.contentOffset.x / (width - 32),
+                  event.nativeEvent.contentOffset.x / (width - 24),
                 );
 
-                setCouponIndex(index);
+                setCouponIndex(
+                  Math.max(0, Math.min(index, coupons.length - 1)),
+                );
               }}
             >
               {coupons.map((coupon, index) => (
                 <View
-                  key={index}
+                  key={coupon.bank}
                   style={{
-                    width: width - 32,
-                    minHeight: 155,
-                    marginLeft: index === 0 ? 16 : 0,
-                    marginRight: index === coupons.length - 1 ? 16 : 0,
-                    backgroundColor: COLORS.white,
-                    borderRadius: 18,
-                    padding: 20,
-                    borderWidth: 1,
-                    borderColor: "#FFE0CC",
-                    elevation: 3,
+                    width: width - 24,
+                    paddingHorizontal: 4,
                   }}
                 >
                   <View
                     style={{
-                      flexDirection: "row",
-                      alignItems: "center",
+                      backgroundColor: COLORS.white,
+                      borderRadius: 20,
+                      overflow: "hidden",
+                      borderWidth: 1,
+                      borderColor: COLORS.border,
+                      elevation: 3,
                     }}
                   >
                     <View
                       style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 14,
                         backgroundColor: COLORS.primary,
-                        justifyContent: "center",
+                        paddingHorizontal: 20,
+                        paddingVertical: 17,
+                        flexDirection: "row",
                         alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <Text
+                      <View style={{ flex: 1, paddingRight: 10 }}>
+                        <Text
+                          style={{
+                            color: COLORS.onPrimary,
+                            fontSize: 12,
+                            fontWeight: "700",
+                            letterSpacing: 1,
+                          }}
+                        >
+                          EXCLUSIVE DEAL
+                        </Text>
+
+                        <Text
+                          style={{
+                            color: COLORS.onPrimary,
+                            fontSize: 25,
+                            fontWeight: "900",
+                            marginTop: 5,
+                          }}
+                        >
+                          {coupon.title}
+                        </Text>
+                      </View>
+
+                      <View
                         style={{
-                          fontSize: 22,
-                          color: COLORS.white,
-                          fontWeight: "900",
+                          width: 58,
+                          height: 58,
+                          borderRadius: 29,
+                          backgroundColor: COLORS.white,
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        %
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 27,
+                            fontWeight: "900",
+                            color: COLORS.primary,
+                          }}
+                        >
+                          %
+                        </Text>
+                      </View>
                     </View>
 
                     <View
                       style={{
-                        marginLeft: 14,
-                        flex: 1,
+                        padding: 18,
+                        flexDirection: "row",
+                        alignItems: "center",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: "800",
-                          color: COLORS.text,
-                        }}
-                      >
-                        {coupon.bank}
-                      </Text>
+                      <View style={{ flex: 1, paddingRight: 10 }}>
+                        <Text
+                          style={{
+                            color: COLORS.text,
+                            fontSize: 18,
+                            fontWeight: "900",
+                          }}
+                        >
+                          {coupon.bank}
+                        </Text>
 
-                      <Text
-                        style={{
-                          fontSize: 22,
-                          fontWeight: "900",
-                          color: COLORS.primary,
-                          marginTop: 4,
-                        }}
-                      >
-                        {coupon.title}
-                      </Text>
+                        <Text
+                          style={{
+                            color: COLORS.secondaryText,
+                            fontSize: 13,
+                            marginTop: 6,
+                            lineHeight: 19,
+                          }}
+                        >
+                          {coupon.subtitle}
+                        </Text>
+                      </View>
 
-                      <Text
+                      <View
                         style={{
-                          fontSize: 14,
-                          color: COLORS.secondaryText,
-                          marginTop: 5,
+                          borderWidth: 1,
+                          borderColor: COLORS.primary,
+                          borderStyle: "dashed",
+                          borderRadius: 10,
+                          paddingHorizontal: 12,
+                          paddingVertical: 9,
+                          alignItems: "center",
                         }}
                       >
-                        {coupon.subtitle}
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 11,
+                            fontWeight: "800",
+                            color: COLORS.primary,
+                          }}
+                        >
+                          OFFER
+                        </Text>
+
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontWeight: "900",
+                            color: COLORS.text,
+                            marginTop: 3,
+                          }}
+                        >
+                          #{index + 1}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -360,32 +484,39 @@ export default function PayBillPage() {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: 10,
+                marginTop: 16,
               }}
             >
-              {coupons.map((_, index) => (
+              {coupons.map((coupon, index) => (
                 <View
-                  key={index}
+                  key={coupon.bank}
                   style={{
-                    width: couponIndex === index ? 9 : 7,
-                    height: couponIndex === index ? 9 : 7,
-                    borderRadius: 10,
-                    backgroundColor:
-                      couponIndex === index ? COLORS.primary : "#D0D0D0",
+                    width: couponIndex === index ? 24 : 7,
+                    height: 7,
+                    borderRadius: 5,
                     marginHorizontal: 4,
+                    backgroundColor:
+                      couponIndex === index ? COLORS.primary : COLORS.border,
                   }}
                 />
               ))}
             </View>
+
+            <Text
+              style={{
+                fontSize: 11,
+                color: COLORS.secondaryText,
+                textAlign: "center",
+                marginTop: 7,
+              }}
+            >
+              Offers rotate automatically every 5 seconds
+            </Text>
           </View>
         </ScrollView>
 
         <View
           style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 0,
             backgroundColor: COLORS.white,
             paddingHorizontal: 16,
             paddingTop: 12,
@@ -407,7 +538,7 @@ export default function PayBillPage() {
           >
             <Text
               style={{
-                color: COLORS.white,
+                color: COLORS.onPrimary,
                 fontSize: 17,
                 fontWeight: "900",
               }}

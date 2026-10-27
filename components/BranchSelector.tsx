@@ -1,13 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-
-const COLORS = {
-  primary: "#FC8019",
-  primaryLight: "#FFF4EC",
-  white: "#FFFFFF",
-  text: "#171717",
-  secondaryText: "#777777",
-  border: "#EEEEEE",
-};
+import { useAppTheme } from "../contexts/ThemeContext";
 
 type Branch = {
   id: string;
@@ -26,6 +18,7 @@ export default function BranchSelector({
   onSelect,
   onClose,
 }: BranchSelectorProps) {
+  const { colors } = useAppTheme();
   return (
     <View
       style={{
@@ -41,7 +34,7 @@ export default function BranchSelector({
     >
       <View
         style={{
-          backgroundColor: COLORS.white,
+          backgroundColor: colors.card,
           borderTopLeftRadius: 26,
           borderTopRightRadius: 26,
           paddingHorizontal: 18,
@@ -74,7 +67,7 @@ export default function BranchSelector({
               style={{
                 fontSize: 20,
                 fontWeight: "800",
-                color: COLORS.text,
+                color: colors.text,
               }}
             >
               Select your branch
@@ -83,7 +76,7 @@ export default function BranchSelector({
             <Text
               style={{
                 fontSize: 12,
-                color: COLORS.secondaryText,
+                color: colors.secondaryText,
                 marginTop: 3,
               }}
             >
@@ -98,7 +91,7 @@ export default function BranchSelector({
               width: 34,
               height: 34,
               borderRadius: 17,
-              backgroundColor: "#F5F5F5",
+              backgroundColor: colors.iconBackground,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -106,7 +99,7 @@ export default function BranchSelector({
             <Text
               style={{
                 fontSize: 23,
-                color: "#333333",
+                color: colors.text,
                 lineHeight: 25,
               }}
             >
@@ -123,9 +116,9 @@ export default function BranchSelector({
             style={{
               flexDirection: "row",
               alignItems: "center",
-              backgroundColor: "#FFFFFF",
+              backgroundColor: colors.card,
               borderWidth: 1,
-              borderColor: COLORS.border,
+              borderColor: colors.border,
               borderRadius: 14,
               paddingHorizontal: 12,
               paddingVertical: 11,
@@ -137,7 +130,7 @@ export default function BranchSelector({
                 width: 40,
                 height: 40,
                 borderRadius: 12,
-                backgroundColor: COLORS.primaryLight,
+                backgroundColor: colors.iconBackground,
                 alignItems: "center",
                 justifyContent: "center",
                 marginRight: 12,
@@ -150,7 +143,7 @@ export default function BranchSelector({
               <Text
                 style={{
                   fontSize: 13,
-                  color: COLORS.secondaryText,
+                  color: colors.secondaryText,
                   fontWeight: "600",
                 }}
               >
@@ -160,7 +153,7 @@ export default function BranchSelector({
               <Text
                 style={{
                   fontSize: 16,
-                  color: COLORS.text,
+                  color: colors.text,
                   fontWeight: "800",
                   marginTop: 2,
                 }}
@@ -174,7 +167,7 @@ export default function BranchSelector({
                 width: 30,
                 height: 30,
                 borderRadius: 15,
-                backgroundColor: COLORS.primaryLight,
+                backgroundColor: colors.iconBackground,
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -182,7 +175,7 @@ export default function BranchSelector({
               <Text
                 style={{
                   fontSize: 20,
-                  color: COLORS.primary,
+                  color: colors.primary,
                   fontWeight: "700",
                 }}
               >

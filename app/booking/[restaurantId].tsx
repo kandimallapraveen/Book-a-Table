@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
+import { useAppTheme } from "../../contexts/ThemeContext";
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,19 +29,6 @@ type SelectedBranch = {
   id: string;
   name: string;
   location: string;
-};
-
-const COLORS = {
-  primary: "#FC8019",
-  primaryDark: "#E86F0A",
-  primaryLight: "#FFF1E6",
-  background: "#F7F8FA",
-  white: "#FFFFFF",
-  text: "#171717",
-  secondaryText: "#777777",
-  border: "#EAEAEA",
-  softOrange: "#FFF7F2",
-  disabled: "#CCCCCC",
 };
 
 const getParamString = (value: string | string[] | undefined): string => {
@@ -114,6 +102,20 @@ const normalizeTimeSearch = (value: string) => {
 };
 
 export default function BookingScreen() {
+  const { colors } = useAppTheme();
+  const COLORS = {
+    primary: colors.primary,
+    primaryDark: colors.primary,
+    primaryLight: colors.iconBackground,
+    background: colors.background,
+    white: colors.card,
+    onPrimary: "#FFFFFF",
+    text: colors.text,
+    secondaryText: colors.secondaryText,
+    border: colors.border,
+    softOrange: colors.iconBackground,
+    disabled: colors.secondaryText,
+  };
   const params = useLocalSearchParams();
 
   const restaurantId = getParamString(params.restaurantId) || "default";
@@ -536,7 +538,7 @@ export default function BookingScreen() {
           >
             <Text
               style={{
-                color: COLORS.white,
+                color: COLORS.onPrimary,
                 fontSize: 28,
               }}
             >
@@ -546,7 +548,7 @@ export default function BookingScreen() {
 
           <Text
             style={{
-              color: COLORS.white,
+              color: COLORS.onPrimary,
               fontSize: 20,
               fontWeight: "800",
             }}
@@ -615,7 +617,7 @@ export default function BookingScreen() {
                       ? formatBookingDate(selectedDate)
                       : "Search date..."
                   }
-                  placeholderTextColor="#999999"
+                  placeholderTextColor={COLORS.secondaryText}
                   value={dateSearch}
                   onChangeText={(text) => {
                     setDateSearch(text);
@@ -643,7 +645,7 @@ export default function BookingScreen() {
                     <Text
                       style={{
                         fontSize: 16,
-                        color: "#999999",
+                        color: COLORS.secondaryText,
                       }}
                     >
                       ✕
@@ -668,7 +670,7 @@ export default function BookingScreen() {
                   <Text
                     style={{
                       fontSize: 17,
-                      color: "#555555",
+                      color: COLORS.text,
                       fontWeight: "600",
                     }}
                   >
@@ -1109,7 +1111,7 @@ export default function BookingScreen() {
 
                 <TextInput
                   placeholder={selectedTime || "Search time..."}
-                  placeholderTextColor="#999999"
+                  placeholderTextColor={COLORS.secondaryText}
                   value={timeSearch}
                   onChangeText={(text) => {
                     setTimeSearch(text);
@@ -1140,7 +1142,7 @@ export default function BookingScreen() {
                   <Text
                     style={{
                       fontSize: 17,
-                      color: "#555555",
+                      color: COLORS.text,
                       fontWeight: "600",
                     }}
                   >
@@ -1229,7 +1231,7 @@ export default function BookingScreen() {
                             borderWidth: 1,
                             borderColor: isSelected
                               ? COLORS.primary
-                              : "#FFE0CC",
+                              : COLORS.border,
                           }}
                         >
                           <Text
@@ -1434,7 +1436,7 @@ export default function BookingScreen() {
                   style={{
                     backgroundColor: COLORS.softOrange,
                     borderWidth: 1,
-                    borderColor: "#FFE0CC",
+                    borderColor: COLORS.border,
                     borderRadius: 9,
                     paddingHorizontal: 10,
                     height: 40,
@@ -1569,7 +1571,7 @@ export default function BookingScreen() {
 
               <Text
                 style={{
-                  color: selectedBranch ? COLORS.text : "#AAAAAA",
+                  color: selectedBranch ? COLORS.text : COLORS.secondaryText,
                   fontSize: 11,
                   fontWeight: "700",
                   maxWidth: "65%",
@@ -1602,7 +1604,7 @@ export default function BookingScreen() {
 
               <Text
                 style={{
-                  color: selectedDate ? COLORS.text : "#AAAAAA",
+                  color: selectedDate ? COLORS.text : COLORS.secondaryText,
                   fontSize: 11,
                   fontWeight: "700",
                 }}
@@ -1631,7 +1633,7 @@ export default function BookingScreen() {
 
               <Text
                 style={{
-                  color: selectedTime ? COLORS.text : "#AAAAAA",
+                  color: selectedTime ? COLORS.text : COLORS.secondaryText,
                   fontSize: 11,
                   fontWeight: "700",
                 }}
@@ -1690,7 +1692,7 @@ export default function BookingScreen() {
 
               <Text
                 style={{
-                  color: assignedTable ? COLORS.primary : "#AAAAAA",
+                  color: assignedTable ? COLORS.primary : COLORS.secondaryText,
                   fontSize: 12,
                   fontWeight: "800",
                 }}
@@ -1726,7 +1728,7 @@ export default function BookingScreen() {
             >
               <Text
                 style={{
-                  color: COLORS.white,
+                  color: COLORS.onPrimary,
                   fontSize: 15,
                   fontWeight: "800",
                 }}

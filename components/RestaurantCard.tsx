@@ -1,4 +1,5 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { useAppTheme } from "../contexts/ThemeContext";
 type RestaurantCardProps = {
   id: string;
   name: string;
@@ -21,12 +22,13 @@ export default function RestaurantCard({
   price,
   onPress,
 }: RestaurantCardProps) {
+  const { colors } = useAppTheme();
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={onPress}
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.card,
         borderRadius: 16,
         marginBottom: 16,
         overflow: "hidden",
@@ -67,7 +69,7 @@ export default function RestaurantCard({
               flex: 1,
               fontSize: 18,
               fontWeight: "800",
-              color: "#222222",
+              color: colors.text,
               marginRight: 10,
             }}
           >
@@ -101,7 +103,7 @@ export default function RestaurantCard({
             numberOfLines={1}
             style={{
               fontSize: 13,
-              color: "#666666",
+              color: colors.secondaryText,
               marginTop: 6,
             }}
           >
@@ -114,7 +116,7 @@ export default function RestaurantCard({
             numberOfLines={1}
             style={{
               fontSize: 13,
-              color: "#777777",
+              color: colors.secondaryText,
               marginTop: 6,
             }}
           >
@@ -134,7 +136,7 @@ export default function RestaurantCard({
             <Text
               style={{
                 fontSize: 13,
-                color: "#555555",
+                color: colors.secondaryText,
                 fontWeight: "600",
               }}
             >
@@ -148,7 +150,7 @@ export default function RestaurantCard({
             <Text
               style={{
                 fontSize: 13,
-                color: "#555555",
+                color: colors.secondaryText,
                 fontWeight: "600",
               }}
             >
@@ -161,7 +163,7 @@ export default function RestaurantCard({
           activeOpacity={0.8}
           onPress={onPress}
           style={{
-            backgroundColor: "#08752F",
+            backgroundColor: colors.primary,
             borderRadius: 10,
             marginTop: 12,
             paddingVertical: 11,
