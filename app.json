@@ -1,14 +1,12 @@
 {
   "expo": {
     "name": "Book a Table",
-    "jsEngine": "hermes",
     "slug": "MyNewApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "mynewapp",
     "userInterfaceStyle": "automatic",
-
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -16,7 +14,6 @@
         "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to use the microphone."
       }
     },
-
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
@@ -26,19 +23,22 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.MyNewApp",
-      "permissions": ["android.permission.RECORD_AUDIO"],
-      "buildProperties": {
-        "abiFilters": ["arm64-v8a"]
-      }
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
-
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-
     "plugins": [
       "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "buildArchs": ["arm64-v8a"]
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -55,12 +55,10 @@
       "expo-web-browser",
       "expo-video"
     ],
-
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
-
     "extra": {
       "router": {},
       "eas": {

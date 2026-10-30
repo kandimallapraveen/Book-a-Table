@@ -29,10 +29,12 @@ export default function RestaurantCard({
       onPress={onPress}
       style={{
         backgroundColor: colors.card,
-        borderRadius: 16,
+        borderRadius: 20,
         marginBottom: 16,
         overflow: "hidden",
-        elevation: 4,
+        borderWidth: 1,
+        borderColor: colors.border,
+        elevation: 5,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -79,8 +81,8 @@ export default function RestaurantCard({
           {rating !== undefined && (
             <View
               style={{
-                backgroundColor: "#08752F",
-                borderRadius: 7,
+                backgroundColor: "#1E7A46",
+                borderRadius: 9,
                 paddingHorizontal: 8,
                 paddingVertical: 5,
               }}
@@ -164,7 +166,7 @@ export default function RestaurantCard({
           onPress={onPress}
           style={{
             backgroundColor: colors.primary,
-            borderRadius: 10,
+            borderRadius: 12,
             marginTop: 12,
             paddingVertical: 11,
             alignItems: "center",
@@ -173,7 +175,7 @@ export default function RestaurantCard({
           <Text
             style={{
               color: "#FFFFFF",
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: "800",
             }}
           >

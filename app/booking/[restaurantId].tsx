@@ -1,11 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
-import { useAppTheme } from "../../contexts/ThemeContext";
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
+import { v4 as uuidv4 } from "uuid";
 import GuestSelector from "../../components/GuestSelector";
 import { branches } from "../../constants/branches";
 import { tables } from "../../constants/tables";
@@ -16,6 +17,7 @@ type Booking = {
   branchId?: string;
   restaurantName: string;
   location: string;
+  image?: string;
   date: string;
   time: string;
   guests: number;
@@ -423,7 +425,7 @@ export default function BookingScreen() {
       });
 
       const newBooking: Booking = {
-        id: Date.now().toString(),
+        id: uuidv4(),
         restaurantId,
         branchId: selectedBranch.id,
         restaurantName: selectedBranch.name,
@@ -1267,18 +1269,17 @@ export default function BookingScreen() {
                 mode="time"
                 is24Hour={false}
                 display="clock"
-                onChange={(_event, selectedPickerDate) => {
+                onValueChange={(_event, selectedPickerDate) => {
                   setShowTimePicker(false);
+                  setPickerTime(selectedPickerDate);
 
-                  if (selectedPickerDate) {
-                    setPickerTime(selectedPickerDate);
+                  const formattedTime = formatPickerTime(selectedPickerDate);
 
-                    const formattedTime = formatPickerTime(selectedPickerDate);
-
-                    setSelectedTime(formattedTime);
-
-                    setTimeSearch(formattedTime);
-                  }
+                  setSelectedTime(formattedTime);
+                  setTimeSearch(formattedTime);
+                }}
+                onDismiss={() => {
+                  setShowTimePicker(false);
                 }}
               />
             )}

@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { BackHandler, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
 const formatBookingDate = (dateString: string) => {
   if (!dateString) {
@@ -19,6 +20,7 @@ const formatBookingDate = (dateString: string) => {
 };
 
 export default function ConfirmationScreen() {
+  const { colors } = useAppTheme();
   const params = useLocalSearchParams();
 
   const bookingId = String(params.bookingId || "");
@@ -47,12 +49,12 @@ export default function ConfirmationScreen() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F7F8F7",
+        backgroundColor: colors.background,
       }}
     >
       <View
         style={{
-          backgroundColor: "#FC8019",
+          backgroundColor: colors.primary,
           paddingHorizontal: 15,
           paddingVertical: 12,
         }}
@@ -81,7 +83,7 @@ export default function ConfirmationScreen() {
             width: 55,
             height: 55,
             borderRadius: 28,
-            backgroundColor: "#E7F6EC",
+            backgroundColor: colors.iconBackground,
             alignItems: "center",
             justifyContent: "center",
             marginBottom: 8,
@@ -90,7 +92,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 30,
-              color: "#FC8019",
+              color: colors.primary,
               fontWeight: "800",
             }}
           >
@@ -102,7 +104,7 @@ export default function ConfirmationScreen() {
           style={{
             fontSize: 21,
             fontWeight: "800",
-            color: "#222222",
+            color: colors.text,
             textAlign: "center",
           }}
         >
@@ -112,7 +114,7 @@ export default function ConfirmationScreen() {
         <Text
           style={{
             fontSize: 12,
-            color: "#666666",
+            color: colors.secondaryText,
             textAlign: "center",
             marginTop: 3,
           }}
@@ -123,7 +125,7 @@ export default function ConfirmationScreen() {
 
       <View
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
           marginHorizontal: 15,
           marginTop: 15,
           borderRadius: 14,
@@ -142,7 +144,7 @@ export default function ConfirmationScreen() {
           style={{
             fontSize: 17,
             fontWeight: "800",
-            color: "#222222",
+            color: colors.text,
             marginBottom: 10,
           }}
         >
@@ -157,7 +159,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -168,7 +170,7 @@ export default function ConfirmationScreen() {
             style={{
               fontSize: 14,
               fontWeight: "700",
-              color: "#222222",
+              color: colors.text,
             }}
             numberOfLines={1}
           >
@@ -184,7 +186,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -194,7 +196,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 13,
-              color: "#333333",
+              color: colors.text,
             }}
             numberOfLines={1}
           >
@@ -210,7 +212,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -221,7 +223,7 @@ export default function ConfirmationScreen() {
             style={{
               fontSize: 13,
               fontWeight: "600",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             {formatBookingDate(date)}
@@ -236,7 +238,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -247,7 +249,7 @@ export default function ConfirmationScreen() {
             style={{
               fontSize: 13,
               fontWeight: "600",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             {time}
@@ -262,7 +264,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -273,7 +275,7 @@ export default function ConfirmationScreen() {
             style={{
               fontSize: 13,
               fontWeight: "600",
-              color: "#222222",
+              color: colors.text,
             }}
           >
             {guests} {Number(guests) === 1 ? "Guest" : "Guests"}
@@ -283,17 +285,17 @@ export default function ConfirmationScreen() {
         <View
           style={{
             marginBottom: 8,
-            backgroundColor: "#FFF7F2",
+            backgroundColor: colors.iconBackground,
             borderRadius: 9,
             padding: 9,
             borderWidth: 1,
-            borderColor: "#FFE0CC",
+            borderColor: colors.border,
           }}
         >
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -304,7 +306,7 @@ export default function ConfirmationScreen() {
             style={{
               fontSize: 17,
               fontWeight: "800",
-              color: "#FC8019",
+              color: colors.primary,
             }}
           >
             {tableName}
@@ -315,7 +317,7 @@ export default function ConfirmationScreen() {
           <Text
             style={{
               fontSize: 11,
-              color: "#777777",
+              color: colors.secondaryText,
               marginBottom: 2,
             }}
           >
@@ -326,7 +328,7 @@ export default function ConfirmationScreen() {
             style={{
               fontSize: 13,
               fontWeight: "700",
-              color: "#FC8019",
+              color: colors.primary,
             }}
             numberOfLines={1}
           >
@@ -339,7 +341,7 @@ export default function ConfirmationScreen() {
         style={{
           marginHorizontal: 15,
           marginTop: 12,
-          backgroundColor: "#E7F6EC",
+          backgroundColor: colors.iconBackground,
           borderRadius: 10,
           paddingVertical: 9,
           paddingHorizontal: 10,
@@ -348,7 +350,7 @@ export default function ConfirmationScreen() {
       >
         <Text
           style={{
-            color: "#FC8019",
+            color: colors.primary,
             fontSize: 13,
             fontWeight: "800",
           }}
@@ -364,7 +366,7 @@ export default function ConfirmationScreen() {
         style={{
           marginHorizontal: 15,
           marginTop: 13,
-          backgroundColor: "#FC8019",
+          backgroundColor: colors.primary,
           paddingVertical: 12,
           borderRadius: 10,
           alignItems: "center",
@@ -387,9 +389,9 @@ export default function ConfirmationScreen() {
         style={{
           marginHorizontal: 15,
           marginTop: 8,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
           borderWidth: 1,
-          borderColor: "#FC8019",
+          borderColor: colors.primary,
           paddingVertical: 12,
           borderRadius: 10,
           alignItems: "center",
@@ -397,7 +399,7 @@ export default function ConfirmationScreen() {
       >
         <Text
           style={{
-            color: "#FC8019",
+            color: colors.primary,
             fontSize: 14,
             fontWeight: "800",
           }}

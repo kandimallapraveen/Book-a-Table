@@ -9,8 +9,10 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
 export default function OTPPage() {
+  const { colors } = useAppTheme();
   const params = useLocalSearchParams();
 
   const email = Array.isArray(params.email) ? params.email[0] : params.email;
@@ -27,13 +29,13 @@ export default function OTPPage() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.content}>
-        <Text style={styles.title}>Verify OTP</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Verify OTP</Text>
 
-        <Text style={styles.subtitle}>Enter the 6-digit OTP sent to</Text>
+        <Text style={[styles.subtitle, { color: colors.secondaryText }]}>Enter the 6-digit OTP sent to</Text>
 
-        <Text style={styles.email}>{email || "your email"}</Text>
+        <Text style={[styles.email, { color: colors.primary }]}>{email || "your email"}</Text>
 
         <TextInput
           value={otp}
@@ -41,14 +43,21 @@ export default function OTPPage() {
             setOtp(text.replace(/[^0-9]/g, "").slice(0, 6))
           }
           placeholder="Enter OTP"
-          placeholderTextColor="#999"
+          placeholderTextColor={colors.secondaryText}
           keyboardType="number-pad"
           maxLength={6}
-          style={styles.input}
+          style={[
+            styles.input,
+            {
+              backgroundColor: colors.card,
+              borderColor: colors.inputBorder,
+              color: colors.text,
+            },
+          ]}
         />
 
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, { backgroundColor: colors.primary }]}
           onPress={handleVerify}
           activeOpacity={0.8}
         >
@@ -59,7 +68,9 @@ export default function OTPPage() {
           onPress={() => router.back()}
           style={styles.backButton}
         >
-          <Text style={styles.backText}>← Back to Login</Text>
+          <Text style={[styles.backText, { color: colors.primary }]}>
+            ← Back to Login
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -69,7 +80,7 @@ export default function OTPPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7F8FA",
+    backgroundColor: "#FFF9F5",
   },
 
   content: {
@@ -81,13 +92,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "900",
-    color: "#171717",
     textAlign: "center",
   },
 
   subtitle: {
     fontSize: 14,
-    color: "#777",
     textAlign: "center",
     marginTop: 12,
   },
@@ -95,7 +104,6 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#FC8019",
     textAlign: "center",
     marginTop: 5,
     marginBottom: 28,
@@ -103,9 +111,7 @@ const styles = StyleSheet.create({
 
   input: {
     height: 52,
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E5E5",
     borderRadius: 12,
     paddingHorizontal: 16,
     fontSize: 18,
@@ -134,7 +140,6 @@ const styles = StyleSheet.create({
   },
 
   backText: {
-    color: "#FC8019",
     fontSize: 14,
     fontWeight: "700",
   },

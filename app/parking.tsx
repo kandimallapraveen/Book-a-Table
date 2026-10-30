@@ -1,13 +1,16 @@
 import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../contexts/ThemeContext";
 
 export default function ParkingScreen() {
+  const { colors } = useAppTheme();
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F7F8FA",
+        backgroundColor: colors.background,
       }}
     >
       <View
@@ -16,7 +19,7 @@ export default function ParkingScreen() {
           alignItems: "center",
           paddingHorizontal: 18,
           paddingVertical: 16,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
         }}
       >
         <TouchableOpacity
@@ -25,7 +28,7 @@ export default function ParkingScreen() {
             width: 40,
             height: 40,
             borderRadius: 20,
-            backgroundColor: "#FFF1E6",
+            backgroundColor: colors.iconBackground,
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -33,7 +36,7 @@ export default function ParkingScreen() {
           <Text
             style={{
               fontSize: 26,
-              color: "#FC8019",
+              color: colors.primary,
               fontWeight: "700",
             }}
           >
@@ -46,7 +49,7 @@ export default function ParkingScreen() {
             marginLeft: 12,
             fontSize: 20,
             fontWeight: "800",
-            color: "#171717",
+            color: colors.text,
           }}
         >
           Restaurant Parking
@@ -58,7 +61,7 @@ export default function ParkingScreen() {
           flex: 1,
           margin: 16,
           borderRadius: 20,
-          backgroundColor: "#DDE8D8",
+          backgroundColor: colors.iconBackground,
           overflow: "hidden",
           alignItems: "center",
           justifyContent: "center",
@@ -74,7 +77,7 @@ export default function ParkingScreen() {
 
         <View
           style={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: colors.card,
             paddingHorizontal: 18,
             paddingVertical: 12,
             borderRadius: 14,
@@ -86,7 +89,7 @@ export default function ParkingScreen() {
             style={{
               fontSize: 16,
               fontWeight: "800",
-              color: "#171717",
+              color: colors.text,
             }}
           >
             🅿️ Parking Area
@@ -96,7 +99,7 @@ export default function ParkingScreen() {
             style={{
               marginTop: 4,
               fontSize: 12,
-              color: "#555555",
+              color: colors.secondaryText,
             }}
           >
             Parking location
@@ -106,7 +109,7 @@ export default function ParkingScreen() {
 
       <View
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
           padding: 20,
           borderTopLeftRadius: 24,
           borderTopRightRadius: 24,
@@ -116,7 +119,7 @@ export default function ParkingScreen() {
           style={{
             fontSize: 19,
             fontWeight: "800",
-            color: "#171717",
+            color: colors.text,
           }}
         >
           🅿️ Parking Available
@@ -126,7 +129,7 @@ export default function ParkingScreen() {
           style={{
             marginTop: 8,
             fontSize: 14,
-            color: "#666666",
+            color: colors.secondaryText,
           }}
         >
           Parking is available near the restaurant entrance.
@@ -136,7 +139,7 @@ export default function ParkingScreen() {
           activeOpacity={0.85}
           style={{
             marginTop: 18,
-            backgroundColor: "#FC8019",
+            backgroundColor: colors.primary,
             paddingVertical: 15,
             borderRadius: 14,
             alignItems: "center",

@@ -34,11 +34,13 @@ export default function BookingCard({
     <View
       style={{
         backgroundColor: colors.card,
-        borderRadius: 14,
-        marginHorizontal: 12,
-        marginVertical: 6,
-        padding: 12,
-        elevation: 3,
+        borderRadius: 20,
+        marginHorizontal: 16,
+        marginVertical: 7,
+        padding: 14,
+        borderWidth: 1,
+        borderColor: colors.border,
+        elevation: 4,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,

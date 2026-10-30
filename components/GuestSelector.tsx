@@ -31,10 +31,12 @@ export default function GuestSelector({
     <View
       style={{
         backgroundColor: colors.card,
-        borderRadius: 14,
-        padding: 4,
+        borderRadius: 18,
+        padding: 14,
         marginVertical: 10,
-        elevation: 3,
+        borderWidth: 1,
+        borderColor: colors.border,
+        elevation: 4,
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
@@ -49,7 +51,7 @@ export default function GuestSelector({
           fontSize: 16,
           fontWeight: "800",
           color: colors.text,
-          marginBottom: -10,
+          marginBottom: 12,
         }}
       >
         Number of Guests

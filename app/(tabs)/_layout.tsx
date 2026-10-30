@@ -1,7 +1,6 @@
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useAppTheme } from "@/contexts/ThemeContext";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
 export default function TabLayout() {
   const { colors } = useAppTheme();
@@ -10,17 +9,31 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.secondaryText,
 
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "700",
+          marginBottom: 2,
+        },
+
         tabBarStyle: {
-          height: 70,
-          marginBottom: 10,
+          height: 76,
+          marginHorizontal: 12,
+          marginBottom: 12,
           paddingTop: 8,
           paddingBottom: 10,
+          borderRadius: 22,
           backgroundColor: colors.card,
           borderTopColor: colors.border,
+          borderWidth: 1,
+          borderColor: colors.border,
+          elevation: 8,
+          shadowColor: "#000000",
+          shadowOpacity: 0.1,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 4 },
         },
       }}
     >
@@ -28,11 +41,11 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: () => (
-            <IconSymbol
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="home"
               size={26}
-              name="house.fill"
-              color={colors.primary}
+              color={focused ? colors.primary : colors.secondaryText}
             />
           ),
         }}
@@ -42,11 +55,11 @@ export default function TabLayout() {
         name="bookings"
         options={{
           title: "Bookings",
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name="calendar-month"
               size={28}
-              color={colors.primary}
+              color={focused ? colors.primary : colors.secondaryText}
             />
           ),
         }}
@@ -56,8 +69,12 @@ export default function TabLayout() {
         name="reorder"
         options={{
           title: "Reorder",
-          tabBarIcon: () => (
-            <MaterialIcons name="sync" size={30} color={colors.primary} />
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="sync"
+              size={30}
+              color={focused ? colors.primary : colors.secondaryText}
+            />
           ),
         }}
       />
@@ -66,11 +83,11 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: () => (
-            <IconSymbol
+          tabBarIcon: ({ focused }) => (
+            <MaterialIcons
+              name="person"
               size={26}
-              name="person.fill"
-              color={colors.primary}
+              color={focused ? colors.primary : colors.secondaryText}
             />
           ),
         }}

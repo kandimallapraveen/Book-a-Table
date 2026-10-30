@@ -1,5 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppTheme } from "@/contexts/ThemeContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import {
@@ -18,6 +18,7 @@ type Booking = {
   restaurantId: string;
   restaurantName: string;
   location: string;
+  image?: string;
   date: string;
   time: string;
   guests: number;
@@ -406,6 +407,18 @@ export default function BookingsScreen() {
                 }}
               >
                 Booking Details
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "#777777",
+                  textAlign: "center",
+                  marginTop: -12,
+                  marginBottom: 18,
+                }}
+              >
+                Booking ID: {selectedBooking.id}
               </Text>
 
               <View

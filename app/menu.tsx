@@ -8,8 +8,10 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "../contexts/ThemeContext";
 
 export default function MenuPage() {
+  const { colors } = useAppTheme();
   const { width } = useWindowDimensions();
 
   const menuWidth = (width - 48) / 2;
@@ -19,7 +21,7 @@ export default function MenuPage() {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: "#F7F8FA",
+        backgroundColor: colors.background,
       }}
     >
       <View
@@ -28,9 +30,9 @@ export default function MenuPage() {
           flexDirection: "row",
           alignItems: "center",
           paddingHorizontal: 16,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.card,
           borderBottomWidth: 1,
-          borderBottomColor: "#E8E8E8",
+          borderBottomColor: colors.border,
         }}
       >
         <TouchableOpacity
@@ -52,7 +54,7 @@ export default function MenuPage() {
           <Text
             style={{
               fontSize: 32,
-              color: "#171717",
+              color: colors.text,
               lineHeight: 34,
             }}
           >
@@ -64,7 +66,7 @@ export default function MenuPage() {
           style={{
             fontSize: 22,
             fontWeight: "700",
-            color: "#171717",
+            color: colors.text,
             marginLeft: 8,
           }}
         >
@@ -91,11 +93,11 @@ export default function MenuPage() {
             style={{
               width: menuWidth,
               height: menuHeight,
-              backgroundColor: "#FFFFFF",
+              backgroundColor: colors.card,
               borderRadius: 10,
               overflow: "hidden",
               borderWidth: 1,
-              borderColor: "#E8E8E8",
+              borderColor: colors.border,
               elevation: 3,
             }}
           >
@@ -113,11 +115,11 @@ export default function MenuPage() {
             style={{
               width: menuWidth,
               height: menuHeight,
-              backgroundColor: "#FFFFFF",
+              backgroundColor: colors.card,
               borderRadius: 10,
               overflow: "hidden",
               borderWidth: 1,
-              borderColor: "#E8E8E8",
+              borderColor: colors.border,
               elevation: 3,
             }}
           >

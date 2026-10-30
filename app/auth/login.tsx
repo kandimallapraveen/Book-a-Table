@@ -12,8 +12,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
 export default function Login() {
+  const { colors } = useAppTheme();
   const [email, setEmail] = React.useState("");
   const [otp, setOtp] = React.useState("");
   const [otpSent, setOtpSent] = React.useState(false);
@@ -65,7 +67,7 @@ export default function Login() {
     <KeyboardAvoidingView
       style={{
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: colors.background,
       }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
@@ -98,7 +100,7 @@ export default function Login() {
             style={{
               fontSize: 30,
               fontWeight: "bold",
-              color: "#222",
+              color: colors.text,
             }}
           >
             Welcome Back!
@@ -107,7 +109,7 @@ export default function Login() {
           <Text
             style={{
               fontSize: 15,
-              color: "#777",
+              color: colors.secondaryText,
               marginTop: 7,
             }}
           >
@@ -126,14 +128,14 @@ export default function Login() {
             width: "100%",
             height: 55,
             borderWidth: 1,
-            borderColor: "#CCCCCC",
+            borderColor: colors.inputBorder,
             borderRadius: 10,
             paddingHorizontal: 16,
             fontSize: 16,
             marginBottom: 15,
-            backgroundColor: "white",
+            backgroundColor: colors.card,
           }}
-          placeholderTextColor="#999"
+          placeholderTextColor={colors.secondaryText}
         />
 
         {!otpSent ? (
@@ -142,7 +144,7 @@ export default function Login() {
               onPress={handleSendOTP}
               activeOpacity={0.8}
               style={{
-                backgroundColor: "#FC8019",
+                backgroundColor: colors.primary,
                 height: 55,
                 borderRadius: 10,
                 width: "100%",
@@ -153,7 +155,7 @@ export default function Login() {
             >
               <Text
                 style={{
-                  color: "white",
+                  color: "#FFFFFF",
                   fontSize: 17,
                   fontWeight: "bold",
                 }}
@@ -176,14 +178,14 @@ export default function Login() {
               <View
                 style={{
                   height: 1,
-                  backgroundColor: "#CCCCCC",
+                  backgroundColor: colors.border,
                   flex: 1,
                 }}
               />
 
               <Text
                 style={{
-                  color: "#777",
+                  color: colors.secondaryText,
                   fontSize: 14,
                   fontWeight: "600",
                   marginHorizontal: 12,
@@ -195,7 +197,7 @@ export default function Login() {
               <View
                 style={{
                   height: 1,
-                  backgroundColor: "#CCCCCC",
+                  backgroundColor: colors.border,
                   flex: 1,
                 }}
               />
@@ -213,23 +215,23 @@ export default function Login() {
                 width: "100%",
                 height: 55,
                 borderWidth: 1,
-                borderColor: "#CCCCCC",
+                borderColor: colors.inputBorder,
                 borderRadius: 10,
                 paddingHorizontal: 16,
                 fontSize: 18,
                 marginBottom: 15,
-                backgroundColor: "white",
+                backgroundColor: colors.card,
                 textAlign: "center",
                 letterSpacing: 5,
               }}
-              placeholderTextColor="#999"
+              placeholderTextColor={colors.secondaryText}
             />
 
             <TouchableOpacity
               onPress={handleVerifyOTP}
               activeOpacity={0.8}
               style={{
-                backgroundColor: "#FC8019",
+                backgroundColor: colors.primary,
                 height: 55,
                 borderRadius: 10,
                 width: "100%",
@@ -240,7 +242,7 @@ export default function Login() {
             >
               <Text
                 style={{
-                  color: "white",
+                  color: "#FFFFFF",
                   fontSize: 17,
                   fontWeight: "bold",
                 }}
@@ -263,14 +265,14 @@ export default function Login() {
               <View
                 style={{
                   height: 1,
-                  backgroundColor: "#CCCCCC",
+                  backgroundColor: colors.border,
                   flex: 1,
                 }}
               />
 
               <Text
                 style={{
-                  color: "#777",
+                  color: colors.secondaryText,
                   fontSize: 14,
                   fontWeight: "600",
                   marginHorizontal: 12,
@@ -282,7 +284,7 @@ export default function Login() {
               <View
                 style={{
                   height: 1,
-                  backgroundColor: "#CCCCCC",
+                  backgroundColor: colors.border,
                   flex: 1,
                 }}
               />

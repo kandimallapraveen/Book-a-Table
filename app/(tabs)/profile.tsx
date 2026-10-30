@@ -13,6 +13,40 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const themeOptions: {
+  value: ThemeType;
+  title: string;
+  description: string;
+  background: string;
+  textColor: string;
+  accent: string;
+}[] = [
+  {
+    value: "light",
+    title: "☀️ Light Theme",
+    description: "White background",
+    background: "#FFFFFF",
+    textColor: "#222222",
+    accent: "#FC8019",
+  },
+  {
+    value: "dark",
+    title: "🌙 Dark Theme",
+    description: "Dark background",
+    background: "#222222",
+    textColor: "#FFFFFF",
+    accent: "#FC8019",
+  },
+  {
+    value: "custom",
+    title: "🎨 Warm Theme",
+    description: "Deep orange surfaces",
+    background: "#21150F",
+    textColor: "#FFF8F2",
+    accent: "#FF8A2A",
+  },
+];
+
 export default function Profile() {
   const { theme, colors, setTheme } = useAppTheme();
 
@@ -54,7 +88,6 @@ export default function Profile() {
   const handleSelectTheme = async (selectedTheme: ThemeType) => {
     try {
       await setTheme(selectedTheme);
-
       setShowThemes(false);
     } catch (error) {
       console.log("Theme saving error:", error);
@@ -128,12 +161,28 @@ export default function Profile() {
   };
 
   const handleBack = () => {
+    if (showThemes) {
+      setShowThemes(false);
+      return;
+    }
+
+    if (editMode) {
+      handleCancel();
+      return;
+    }
+
     if (router.canGoBack()) {
       router.back();
     } else {
       router.replace("/(tabs)" as any);
     }
   };
+
+  const screenTitle = showThemes
+    ? "Themes"
+    : editMode
+      ? "Edit Profile"
+      : "Profile";
 
   return (
     <SafeAreaView
@@ -178,11 +227,11 @@ export default function Profile() {
               color: colors.text,
             }}
           >
-            Profile
+            {screenTitle}
           </Text>
         </View>
 
-        {!editMode ? (
+        {!editMode && !showThemes ? (
           <>
             <View
               style={{
@@ -368,7 +417,7 @@ export default function Profile() {
                 borderWidth: 1,
                 borderColor: colors.border,
               }}
-              onPress={() => setShowThemes(!showThemes)}
+              onPress={() => setShowThemes(true)}
             >
               <View
                 style={{
@@ -406,151 +455,9 @@ export default function Profile() {
               </View>
 
               <Text style={{ fontSize: 28, color: colors.secondaryText }}>
-                {showThemes ? "⌄" : "›"}
+                ›
               </Text>
             </TouchableOpacity>
-
-            {showThemes && (
-              <View style={{ gap: 10, marginBottom: 15 }}>
-                <TouchableOpacity
-                  onPress={() => handleSelectTheme("light")}
-                  style={{
-                    backgroundColor: appThemeColor("light"),
-                    padding: 18,
-                    borderRadius: 14,
-                    borderWidth: 2,
-                    borderColor: theme === "light" ? "#FC8019" : "#EEEEEE",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        color: "#222222",
-                        fontSize: 16,
-                        fontWeight: "700",
-                      }}
-                    >
-                      ☀️ Light Theme
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#777777",
-                        marginTop: 5,
-                      }}
-                    >
-                      White background
-                    </Text>
-                  </View>
-
-                  {theme === "light" && (
-                    <Text
-                      style={{
-                        color: "#FC8019",
-                        fontSize: 20,
-                        fontWeight: "900",
-                      }}
-                    >
-                      ✓
-                    </Text>
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => handleSelectTheme("dark")}
-                  style={{
-                    backgroundColor: "#222222",
-                    padding: 18,
-                    borderRadius: 14,
-                    borderWidth: 2,
-                    borderColor: theme === "dark" ? "#FC8019" : "#444444",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        color: "#FFFFFF",
-                        fontSize: 16,
-                        fontWeight: "700",
-                      }}
-                    >
-                      🌙 Dark Theme
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#CCCCCC",
-                        marginTop: 5,
-                      }}
-                    >
-                      Dark background
-                    </Text>
-                  </View>
-
-                  {theme === "dark" && (
-                    <Text
-                      style={{
-                        color: "#FC8019",
-                        fontSize: 20,
-                        fontWeight: "900",
-                      }}
-                    >
-                      ✓
-                    </Text>
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => handleSelectTheme("custom")}
-                  style={{
-                    backgroundColor: "#FFFFFF",
-                    padding: 18,
-                    borderRadius: 14,
-                    borderWidth: 2,
-                    borderColor: theme === "custom" ? "#7C3AED" : "#EEEEEE",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        color: "#7C3AED",
-                        fontSize: 16,
-                        fontWeight: "700",
-                      }}
-                    >
-                      🎨 Custom Theme
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#777777",
-                        marginTop: 5,
-                      }}
-                    >
-                      Personalize your colors
-                    </Text>
-                  </View>
-
-                  {theme === "custom" && (
-                    <Text
-                      style={{
-                        color: "#7C3AED",
-                        fontSize: 20,
-                        fontWeight: "900",
-                      }}
-                    >
-                      ✓
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              </View>
-            )}
 
             <Text
               style={{
@@ -598,7 +505,7 @@ export default function Profile() {
               </Text>
             </TouchableOpacity>
           </>
-        ) : (
+        ) : editMode ? (
           <View>
             <Text
               style={{
@@ -608,7 +515,7 @@ export default function Profile() {
                 marginBottom: 25,
               }}
             >
-              Edit Profile
+              Update your details
             </Text>
 
             <Text
@@ -717,12 +624,77 @@ export default function Profile() {
               </Text>
             </TouchableOpacity>
           </View>
+        ) : (
+          <View>
+            <Text
+              style={{
+                fontSize: 15,
+                color: colors.secondaryText,
+                marginBottom: 20,
+              }}
+            >
+              Choose how your app looks.
+            </Text>
+
+            {themeOptions.map((item) => {
+              const isSelected = theme === item.value;
+
+              return (
+                <TouchableOpacity
+                  key={item.value}
+                  activeOpacity={0.8}
+                  onPress={() => handleSelectTheme(item.value)}
+                  style={{
+                    backgroundColor: item.background,
+                    padding: 20,
+                    borderRadius: 15,
+                    borderWidth: 2,
+                    borderColor: isSelected ? item.accent : colors.border,
+                    marginBottom: 14,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={{
+                        color: item.textColor,
+                        fontSize: 17,
+                        fontWeight: "800",
+                      }}
+                    >
+                      {item.title}
+                    </Text>
+
+                    <Text
+                      style={{
+                        color: item.textColor,
+                        marginTop: 6,
+                        fontSize: 12,
+                      }}
+                    >
+                      {item.description}
+                    </Text>
+                  </View>
+
+                  {isSelected && (
+                    <Text
+                      style={{
+                        color: item.accent,
+                        fontSize: 22,
+                        fontWeight: "900",
+                      }}
+                    >
+                      ✓
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
   );
-}
-
-function appThemeColor(theme: "light") {
-  return "#FFFFFF";
 }

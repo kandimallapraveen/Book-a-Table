@@ -10,7 +10,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppTheme } from "../contexts/ThemeContext";
@@ -1437,12 +1437,18 @@ export default function HomeScreen() {
             </View>
           </View>
         </View>
+      </ScrollView>
 
+      <View
+        style={{
+          backgroundColor: colors.background,
+        }}
+      >
         <BottomActionButtons
           selectedBranch={selectedBranch}
           onBookTable={goToBooking}
         />
-      </ScrollView>
+      </View>
 
       {showBranchBox && (
         <BranchSelector

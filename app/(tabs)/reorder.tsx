@@ -17,6 +17,7 @@ type Booking = {
   restaurantId: string;
   restaurantName: string;
   location: string;
+  image?: string;
   date: string;
   time: string;
   guests: number;
@@ -158,16 +159,28 @@ export default function Reorder() {
           },
         }}
       >
-        <Image
-          source={{
-            uri: "https://via.placeholder.com/300",
-          }}
-          style={{
-            width: "100%",
-            height: 95,
-          }}
-          resizeMode="cover"
-        />
+        {booking.image ? (
+          <Image
+            source={{ uri: booking.image }}
+            resizeMode="cover"
+            style={{
+              width: "100%",
+              height: 135,
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              width: "100%",
+              height: 135,
+              backgroundColor: colors.iconBackground,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ fontSize: 42 }}>🍽️</Text>
+          </View>
+        )}
 
         <View
           style={{
