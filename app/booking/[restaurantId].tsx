@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import * as Crypto from "expo-crypto";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -71,6 +70,21 @@ const findAvailableTable = (slotBookings: Booking[]) => {
   );
 
   return tables.find((table) => !bookedTableIds.has(table.id)) ?? null;
+};
+
+const createBookingId = (bookings: Booking[]) => {
+  const timestamp = Date.now().toString();
+  let bookingId = "";
+
+  do {
+    const suffix = Math.floor(Math.random() * 10000)
+      .toString()
+      .padStart(4, "0");
+
+    bookingId = `${timestamp}${suffix}`;
+  } while (bookings.some((booking) => booking.id === bookingId));
+
+  return bookingId;
 };
 
 const normalizeTimeSearch = (value: string) => {
@@ -424,7 +438,7 @@ export default function BookingScreen() {
       });
 
       const newBooking: Booking = {
-        id: Crypto.randomUUID(),
+        id: createBookingId(bookings),
         restaurantId,
         branchId: selectedBranch.id,
         restaurantName: selectedBranch.name,

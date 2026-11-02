@@ -332,7 +332,11 @@ export default function ConfirmationScreen() {
             }}
             numberOfLines={1}
           >
-            {bookingId}
+            #
+            {bookingId.slice(0, -4)}
+            <Text style={{ fontSize: 15, fontWeight: "900" }}>
+              {bookingId.slice(-4)}
+            </Text>
           </Text>
         </View>
       </View>

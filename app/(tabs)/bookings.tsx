@@ -418,7 +418,10 @@ export default function BookingsScreen() {
                   marginBottom: 18,
                 }}
               >
-                Booking ID: {selectedBooking.id}
+                Booking ID: #{selectedBooking.id.slice(0, -4)}
+                <Text style={{ fontSize: 14, fontWeight: "900" }}>
+                  {selectedBooking.id.slice(-4)}
+                </Text>
               </Text>
 
               <View
