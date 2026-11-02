@@ -1,15 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as Crypto from "expo-crypto";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAppTheme } from "../../contexts/ThemeContext";
-
-import { v4 as uuidv4 } from "uuid";
 import GuestSelector from "../../components/GuestSelector";
 import { branches } from "../../constants/branches";
 import { tables } from "../../constants/tables";
+import { useAppTheme } from "../../contexts/ThemeContext";
 
 type Booking = {
   id: string;
@@ -425,7 +424,7 @@ export default function BookingScreen() {
       });
 
       const newBooking: Booking = {
-        id: uuidv4(),
+        id: Crypto.randomUUID(),
         restaurantId,
         branchId: selectedBranch.id,
         restaurantName: selectedBranch.name,
@@ -485,7 +484,7 @@ export default function BookingScreen() {
         },
       } as any);
     } catch (error) {
-      console.log("Booking error:", error);
+      console.error("Booking error details:", error);
 
       Alert.alert("Error", "Unable to save your booking. Please try again.");
     }
